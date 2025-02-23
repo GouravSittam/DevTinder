@@ -39,7 +39,7 @@ app.get("/admin/deleteUser", (req, res) => {
 });
 
 app.use("/test", (req, res) => {
-  res.send("Hello, hello!");
+  res.send("HelloHello, hello!");
 });
 
 
