@@ -6,13 +6,10 @@ const connectionDB = async () => {
   );
 };
 
-connectionDB()
-    .then(() => {
-        console.log("Database connected successfully....");
-    })
-    .catch((err) => {
-        console.error("Database connection failed");
-    });
+
+module.exports = connectionDB;
+
+
 
 // mongoose.connect(
 //   "mongodb+srv://gouravsittam:BixBie2C7oFv2j4Z@devspark.yx5wf.mongodb.net/"
