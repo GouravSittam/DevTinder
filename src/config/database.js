@@ -7,6 +7,4 @@ const connectionDB = async () => {
 
 module.exports = connectionDB;
 
-// mongoose.connect(
-//   "mongodb+srv://gouravsittam:BixBie2C7oFv2j4Z@devspark.yx5wf.mongodb.net/"
-// );
+
