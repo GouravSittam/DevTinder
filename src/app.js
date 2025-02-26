@@ -20,7 +20,6 @@ app.post("/signup", async (req, res) => {
     res.send(400).send("Error while adding user" + err.message);
   }
 });
-
 connectionDB()
   .then(() => {
     console.log("Database connected successfully✅✅");
