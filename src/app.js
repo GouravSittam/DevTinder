@@ -41,16 +41,25 @@ app.get("/user", async (req, res) => {
 });
 
 //Feed api - get /feed -- get al the uders from the database
-app.get("/feed", async (req,res)=>{
-  try{
-    const users = await  User.find({});
+app.get("/feed", async (req, res) => {
+  try {
+    const users = await User.find({});
     res.send(users);
+  } catch (err) {
+    res.status(500).send("Something went Wrong");
+  }
+});
+
+//Delete API
+app.delete("/user",async(req,res)=>{
+  const userId=req.body.userid;
+  try{
+    const user=await User.findByIdAndDelete({_id: userId});
   }
   catch(err){
-    res.status(500).send("Something went Wrong")
+    res.status(500).send("Error while deleting user: ");
   }
 })
-
 
 connectionDB()
   .then(() => {
