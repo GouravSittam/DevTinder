@@ -8,7 +8,7 @@ app.use(express.json());
 
 app.post("/signup", async (req, res) => {
   //creating a new instance of user model
-  const user= new User(req.body);
+  const user = new User(req.body);
 
   // const user = new User({
   //   firstName: "Kunal",
@@ -23,6 +23,35 @@ app.post("/signup", async (req, res) => {
     res.send(400).send("Error while adding user" + err.message);
   }
 });
+
+//Get user by email
+app.get("/user", async (req, res) => {
+  const userEmail = req.body.emailID;
+
+  try {
+    const users = await User.find({ emailID: userEmail });
+    if (users.length === 0) {
+      res.status(404).send("User not found");
+    } else {
+      res.send(users);
+    }
+  } catch (err) {
+    res.status(500).send("Error while fetching user: " + err.message);
+  }
+});
+
+//Feed api - get /feed -- get al the uders from the database
+app.get("/feed", async (req,res)=>{
+  try{
+    const users = await  User.find({});
+    res.send(users);
+  }
+  catch(err){
+    res.status(500).send("Something went Wrong")
+  }
+})
+
+
 connectionDB()
   .then(() => {
     console.log("Database connected successfully✅✅");
