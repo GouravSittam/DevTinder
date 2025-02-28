@@ -50,16 +50,31 @@ app.get("/feed", async (req, res) => {
   }
 });
 
-//Delete API
-app.delete("/user",async(req,res)=>{
-  const userId=req.body.userid;
-  try{
-    const user=await User.findByIdAndDelete({_id: userId});
+//Delete API user for database
+app.delete("/user", async (req, res) => {
+  const userId = req.body.userId;
+  try {
+    const user = await User.findByIdAndDelete(userId);
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+    res.send("User deleted successfully");
+  } catch (err) {
+    res.status(500).send("Error while deleting user: " + err.message);
   }
-  catch(err){
-    res.status(500).send("Error while deleting user: ");
+});
+
+//update data of the user
+app.patch("/user", async (req, res) => {
+  const userId = req.body.userId;
+  const data = req.body;
+  try {
+    await User.findByIdAndUpdate({ _id: userId }, data);
+    res.send("User updated successfully");
+  } catch (err) {
+    res.status(500).send("Error while updating user: ");
   }
-})
+});
 
 connectionDB()
   .then(() => {
