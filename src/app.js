@@ -65,16 +65,37 @@ app.delete("/user", async (req, res) => {
 });
 
 //update data of the user
-app.patch("/user", async (req, res) => {
-  const userId = req.body.userId;
+app.patch("/user/:userId", async (req, res) => {
+  const userId = req.params?.userId;
+  //before i write here data
   const data = req.body;
+
   try {
-    await User.findByIdAndUpdate({ _id: userId }, data,{
-      runValidators:true,
+    const ALLOWED_UPDATES = [
+      // "userID",
+      "photoURL",
+      "about",
+      "gender",
+      "skills",
+      "age",
+    ];
+    const isUpdateAllowed = Object.keys(data).every((k) =>
+      ALLOWED_UPDATES.includes(k)
+    );
+    if (!isUpdateAllowed) {
+      throw new Error("Update not Allowed");
+    }
+
+    if (data?.skills.length > 10) {
+      throw new Error("Skills cannot be more that 10");
+    }
+
+    await User.findByIdAndUpdate({ _id: userId }, data, {
+      runValidators: true,
     });
     res.send("User updated successfully");
   } catch (err) {
-    res.status(500).send("Error while updating user: ");
+    res.status(500).send("Error while updating user: " + err.message);
   }
 });
 
@@ -88,4 +109,3 @@ connectionDB()
   .catch((err) => {
     console.error("Database connection failed");
   });
- 

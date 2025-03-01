@@ -45,6 +45,7 @@ const userSchema = new mongoose.Schema(
     },
     skills: {
       type: [String],
+      minlength: 10
     },
   },
   {
