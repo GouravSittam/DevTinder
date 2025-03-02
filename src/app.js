@@ -115,7 +115,7 @@ app.post("/signup", async (req, res) => {
     const { firstName, lastName, emailID, password } = req.body;
     //Encrypting the password
     const passwordHash = await bcrypt.hash(password, 9);
-    console.log(passwordHash);
+    // console.log(passwordHash);
 
     //creating a new instance of user model
     const user = new User({
@@ -130,6 +130,26 @@ app.post("/signup", async (req, res) => {
     res.send("User added successfully");
   } catch (err) {
     res.status(400).send("ERROR: " + err.message);
+  }
+});
+
+app.post("/login", async (req, res) => {
+  try {
+    const { emailID, password } = req.body;
+
+    const user = await User.findOne({ emailID: emailID });
+    if (!user) {
+      throw new Error("Invalid Credentials");
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      res.send("Login Successfull");
+    } else {
+      throw new Error("Invalid Credentials");
+    }
+  } catch (err) {
+    res.status(500).send("ERROR: " + err.message);
   }
 });
 
