@@ -97,25 +97,39 @@
 //     console.error("Database connection failed: " + err.message);
 //   });
 
-
-
 require("dotenv").config();
 const express = require("express");
 const connectionDB = require("./config/database");
 const app = express();
 const User = require("./models/user");
+const { validateSignUpDate } = require("./utils/validation");
+const bcrypt = require("bcrypt");
 
 app.use(express.json());
 
 app.post("/signup", async (req, res) => {
-  //creating a new instance of user model
-  const user = new User(req.body);
-
   try {
+    //validation of data
+    validateSignUpDate(req);
+
+    const { firstName, lastName, emailID, password } = req.body;
+    //Encrypting the password
+    const passwordHash = await bcrypt.hash(password, 9);
+    console.log(passwordHash);
+
+    //creating a new instance of user model
+    const user = new User({
+      firstName,
+      lastName,
+      emailID,
+      password: passwordHash,
+      //req.body
+    });
+
     await user.save();
     res.send("User added successfully");
   } catch (err) {
-    res.status(400).send("Error while adding user: " + err.message);
+    res.status(400).send("ERROR: " + err.message);
   }
 });
 
@@ -164,13 +178,7 @@ app.patch("/user/:userId", async (req, res) => {
   const data = req.body;
 
   try {
-    const ALLOWED_UPDATES = [
-      "photoURL",
-      "about",
-      "gender",
-      "skills",
-      "age",
-    ];
+    const ALLOWED_UPDATES = ["photoURL", "about", "gender", "skills", "age"];
     const isUpdateAllowed = Object.keys(data).every((k) =>
       ALLOWED_UPDATES.includes(k)
     );
