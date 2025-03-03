@@ -27,6 +27,7 @@ app.use("/admin", (req, res, next) => {
   }
 });
 
+
 app.get("/admin/getAllData", (req, res) => {
   res.send("Admin Data Sent");
 });
