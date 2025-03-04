@@ -163,6 +163,9 @@ app.post("/login", async (req, res) => {
 app.get("/profile", async (req, res) => {
   const cookies = req.cookies;
 
+  const { token } = cookies;
+  //validate the token
+
   console.log(cookies);
   res.send("Reading cookies");
 });
