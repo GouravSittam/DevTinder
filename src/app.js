@@ -163,13 +163,29 @@ app.post("/login", async (req, res) => {
 });
 
 app.get("/profile", async (req, res) => {
-  const cookies = req.cookies;
+  try {
+    const cookies = req.cookies;
+    const { token } = cookies;
 
-  const { token } = cookies;
-  //validate the token
+    // Validate the token
+    if (!token) {
+      throw new Error("Unauthorized Token");
+    }
 
-  console.log(cookies);
-  res.send("Reading cookies");
+    const decodedMessage = await jwt.verify(token, "Gourav$15");
+    const { _id } = decodedMessage;
+    // console.log("Logged in user is: " + _id);
+
+    // Fetch the user from the database
+    const user = await User.findById(_id);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    res.send(user);
+  } catch (err) {
+    res.status(500).send("ERROR: " + err.message);
+  }
 });
 
 //Get user by email
