@@ -189,6 +189,13 @@ app.get("/profile", userAuth, async (req, res) => {
   }
 });
 
+app.post("/sendConnectionRquest", userAuth, async (req, res) => {
+  const user = req.user;
+  console.log("Sending a Connection Request");
+
+  res.send(user.firstName + " sent the connection request");
+});
+
 //Get user by email
 app.get("/user", async (req, res) => {
   const userEmail = req.body.emailID;
