@@ -106,6 +106,7 @@ const { validateSignUpDate } = require("./utils/validation");
 const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
+const { userAuth } = require("./middlewares/auth");
 
 app.use(express.json());
 app.use(cookieParser());
@@ -162,25 +163,25 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.get("/profile", async (req, res) => {
+app.get("/profile", userAuth, async (req, res) => {
   try {
-    const cookies = req.cookies;
-    const { token } = cookies;
-
+    // const cookies = req.cookies;
+    // const { token } = cookies;
+    const user = req.user;
     // Validate the token
-    if (!token) {
-      throw new Error("Unauthorized Token");
-    }
+    // if (!token) {
+    //   throw new Error("Unauthorized Token");
+    // }
 
-    const decodedMessage = await jwt.verify(token, "Gourav$15");
-    const { _id } = decodedMessage;
+    // const decodedMessage = await jwt.verify(token, "Gourav$15");
+    // const { _id } = decodedMessage;
     // console.log("Logged in user is: " + _id);
 
     // Fetch the user from the database
-    const user = await User.findById(_id);
-    if (!user) {
-      throw new Error("User not found");
-    }
+    // const user = await User.findById(_id);
+    // if (!user) {
+    //   throw new Error("User not found");
+    // }
 
     res.send(user);
   } catch (err) {
