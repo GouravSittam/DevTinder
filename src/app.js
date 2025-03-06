@@ -111,9 +111,13 @@ const { userAuth } = require("./middlewares/auth");
 app.use(express.json());
 app.use(cookieParser());
 
-const authRouter = require("./routes/auth")
-const profileRouter = require("./routes/profile")
-const requestRouter = require("./routes/request")
+const authRouter = require("./routes/auth");
+const profileRouter = require("./routes/profile");
+const requestRouter = require("./routes/request");
+
+app.use("/", authRouter);
+app.use("/", profileRouter);
+app.use("/", requestRouter);
 
 // //Get user by email
 // app.get("/user", async (req, res) => {
