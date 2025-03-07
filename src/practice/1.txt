@@ -60,7 +60,3 @@ app.use("/",(err, req, res, next) => {
     next();
   }
 });
-
-// mongoose.connect(
-//   "mongodb+srv://gouravsittam:BixBie2C7oFv2j4Z@devspark.yx5wf.mongodb.net/"
-// );
