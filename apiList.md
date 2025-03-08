@@ -8,7 +8,7 @@
 ## Profile Management
 - **GET** `/profile/view` - View user profile
 - **PATCH** `/profile/edit` - Edit user profile
-- **PATCH** `/profile/password` - Change user password
+- **PATCH** `/profile/password` - //forgot password api
 
 ## Connection Requests
 - **POST** `/request/send/interested/:userId` - Send an interested connection request
