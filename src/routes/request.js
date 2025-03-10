@@ -27,14 +27,12 @@ requestRouter.post(
           message: "Invalid status type: " + status,
         });
       }
-
       const toUser = await User.findById(toUserId);
       if (!toUser) {
         return res.status(400).json({
           message: "User not found",
         });
       }
-
       // Check if there is an existing connection request
       const existingRequest = await ConnectionReqModel.findOne({
         $or: [
