@@ -24,18 +24,16 @@ const connectionRequestSchema = new mongoose.Schema(
   }
 );
 
-connectionRequestSchema.pre("save", function () {
+connectionRequestSchema.pre("save", function (next) {
   const connectionReq = this;
-  //check if the fromuserid is same as touserId
-  if (
-    connectionReq.fromUserId.toString() === connectionReq.toUserId.toString()
-  ) {
-    throw new Error("fromUserId and toUserId cannot be the same");
+  // Check if the fromUserId is the same as toUserId
+  if (connectionReq.fromUserId.toString() === connectionReq.toUserId.toString()) {
+    return next(new Error("fromUserId and toUserId cannot be the same"));
   }
   next();
 });
 
-const ConnectionReqModel = new mongoose.model(
+const ConnectionReqModel = mongoose.model(
   "connectionRequest",
   connectionRequestSchema
 );

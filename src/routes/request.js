@@ -28,8 +28,6 @@ requestRouter.post(
         });
       }
 
-      
-
       const toUser = await User.findById(toUserId);
       if (!toUser) {
         return res.status(400).json({
@@ -59,7 +57,7 @@ requestRouter.post(
       const data = await connectionReq.save();
 
       res.json({
-        message: "Connection request sent",
+        message: req.user.firstName + " is " + status + " in " + toUser.firstName,
         data,
       });
     } catch (err) {
