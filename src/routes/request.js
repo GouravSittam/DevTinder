@@ -74,6 +74,33 @@ requestRouter.post(
     try {
       const loggedInUser = req.user;
 
+      const { status, requestId } = req.params;
+
+      const allowedStatus = ["accepted", "rejected"];
+      if (!allowedStatus.includes(status)) {
+        return res.status(400).json({
+          message: "Status not allowed! ",
+        });
+      }
+
+      const connectionRequest = await connectionRequest.findOne({
+        _id: requestId,
+        toUserId: loggedInUser._id,
+        status: "intrested",
+      });
+      if (!connectionRequest) {
+        return res.status(404).json({
+          message: "Connection rw=equest not found!",
+        });
+      }
+
+      connectionRequest.status = status;
+      const data = await connectionRequest.save();
+      res.json({
+        message: "Connection Request " + status,
+        data,
+      });
+
       //validate the status
       //loggedInId == toUserId
       //Status = intrested
