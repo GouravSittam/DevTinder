@@ -57,8 +57,7 @@ requestRouter.post(
       const data = await connectionReq.save();
 
       res.json({
-        message:
-          req.user.firstName + " is " + status + " in " + toUser.firstName,
+        message: `${req.user.firstName} is ${status} in ${toUser.firstName}`,
         data,
       });
     } catch (err) {
@@ -73,7 +72,6 @@ requestRouter.post(
   async (req, res) => {
     try {
       const loggedInUser = req.user;
-
       const { status, requestId } = req.params;
 
       const allowedStatus = ["accepted", "rejected"];
@@ -83,28 +81,29 @@ requestRouter.post(
         });
       }
 
-      const connectionRequest = await connectionRequest.findOne({
+      console.log("Request ID:", requestId);
+      console.log("Logged in User ID:", loggedInUser._id);
+
+      const connectionRequest = await ConnectionReqModel.findOne({
         _id: requestId,
         toUserId: loggedInUser._id,
-        status: "intrested",
+        status: "interested",
       });
+
       if (!connectionRequest) {
         return res.status(404).json({
-          message: "Connection rw=equest not found!",
+          message: "Connection request not found!",
         });
       }
 
       connectionRequest.status = status;
+
       const data = await connectionRequest.save();
       res.json({
         message: "Connection Request " + status,
         data,
       });
-
-      //validate the status
-      //loggedInId == toUserId
-      //Status = intrested
-    } catch {
+    } catch (err) {
       res.status(400).send("Error: " + err.message);
     }
   }
