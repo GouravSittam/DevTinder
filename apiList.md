@@ -25,6 +25,13 @@
 ## Feed
 - **GET** `/feed` - Get profiles of other users on the platform
 
+## UserRouter
+
+- GET /user/requests
+/user/connections
+/user/feed - Gets you the profiles of other users on platform
+
+
 ## Status
 - **ignore** - Ignore a request
 - **interested** - Show interest in a request
