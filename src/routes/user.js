@@ -12,6 +12,7 @@ const USER_SAFE_DATA = [
   "skills",
 ];
 
+
 userRouter.get("/user/request/received", userAuth, async (req, res) => {
   try {
     const loggedInUser = req.user;
