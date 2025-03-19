@@ -3,6 +3,7 @@ const { userAuth } = require("../middlewares/auth");
 const ConnectionReqModel = require("../models/connectionReq");
 const { connection } = require("mongoose");
 const User = require("../models/user");
+const userModel = require("../models/user");
 
 const userRouter = express.Router();
 const USER_SAFE_DATA = [
@@ -64,16 +65,6 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
 
 userRouter.get("/feed", userAuth, async (req, res) => {
   try {
-    // User should see all the user cards except:
-    // - Their own card
-    // - Their connections
-    // - Ignored people
-    // - Already sent requests
-    // - Accepted requests
-    // - Rejected requests
-    // - Pending requests
-    // - Interested requests
-
     const loggedInUser = req.user;
 
     // Find all the connection requests (sent + received)
@@ -87,7 +78,7 @@ userRouter.get("/feed", userAuth, async (req, res) => {
       hideUsersFromFeed.add(connectionReq.toUserId.toString());
     });
 
-    const users = await User.find({
+    const users = await userModel.find({
       $and: [
         { _id: { $nin: Array.from(hideUsersFromFeed) } },
         { _id: { $ne: loggedInUser._id } },
