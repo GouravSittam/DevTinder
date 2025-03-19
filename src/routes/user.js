@@ -67,6 +67,12 @@ userRouter.get("/feed", userAuth, async (req, res) => {
   try {
     const loggedInUser = req.user;
 
+    const page = parseInt(req.query.page) || 1;
+    let limit = parseInt(req.query.limit) || 10;
+    limit = limit > 50 ? 50 : limit;
+
+    const skip = (page - 1) * limit;
+
     // Find all the connection requests (sent + received)
     const connectionRequests = await ConnectionReqModel.find({
       $or: [{ fromUserId: loggedInUser._id }, { toUserId: loggedInUser._id }],
@@ -78,16 +84,22 @@ userRouter.get("/feed", userAuth, async (req, res) => {
       hideUsersFromFeed.add(connectionReq.toUserId.toString());
     });
 
-    const users = await userModel.find({
-      $and: [
-        { _id: { $nin: Array.from(hideUsersFromFeed) } },
-        { _id: { $ne: loggedInUser._id } },
-      ],
-    }).select(USER_SAFE_DATA);
+    const users = await userModel
+      .find({
+        $and: [
+          { _id: { $nin: Array.from(hideUsersFromFeed) } },
+          { _id: { $ne: loggedInUser._id } },
+        ],
+      })
+      .select(USER_SAFE_DATA)
+      .skip(skip)
+      .limit(limit);
 
     res.send(users);
   } catch (err) {
-    res.status(400).json({ message: "Error while fetching feed: " + err.message });
+    res
+      .status(400)
+      .json({ message: "Error while fetching feed: " + err.message });
   }
 });
 module.exports = userRouter;
