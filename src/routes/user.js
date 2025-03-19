@@ -1,6 +1,7 @@
 const express = require("express");
 const { userAuth } = require("../middlewares/auth");
 const ConnectionReqModel = require("../models/connectionReq");
+const { connection } = require("mongoose");
 
 const userRouter = express.Router();
 const USER_SAFE_DATA = [
@@ -62,9 +63,8 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
 
 userRouter.get("/feed", userAuth, async (req, res) => {
   try {
-
     //user should see al the user cards erxcept
-    //his own card and the cards 
+    //his own card and the cards
     //his connections
     //ignored people
     // alredyt sent request
@@ -73,6 +73,17 @@ userRouter.get("/feed", userAuth, async (req, res) => {
     //pending request
     //interested request
 
+    const loggedInUser = req.user;
+
+    //find all the connections requestes(send + recived)
+
+    const connectionRequests = await ConnectionReqModel.find({
+      $or: [{ fromUserId: loggedInUser._id }, { toUserId: loggedInUser._id }],
+    }).select("fromUserId toUserId status");
+
+    const hideUsersFromFeed = new set();
+
+    res.send(connectionRequests);
   } catch (err) {
     res
       .status(400)
