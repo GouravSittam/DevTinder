@@ -12,7 +12,6 @@ const USER_SAFE_DATA = [
   "skills",
 ];
 
-
 userRouter.get("/user/request/received", userAuth, async (req, res) => {
   try {
     const loggedInUser = req.user;
@@ -58,6 +57,26 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
     });
   } catch (err) {
     res.status(400).send("Error while fetching connections: " + err.message);
+  }
+});
+
+userRouter.get("/feed", userAuth, async (req, res) => {
+  try {
+
+    //user should see al the user cards erxcept
+    //his own card and the cards 
+    //his connections
+    //ignored people
+    // alredyt sent request
+    //accepted request
+    //rejected request
+    //pending request
+    //interested request
+
+  } catch (err) {
+    res
+      .status(400)
+      .json({ message: "Error while fetching feed: " + err.message });
   }
 });
 
