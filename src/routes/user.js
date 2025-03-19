@@ -2,6 +2,7 @@ const express = require("express");
 const { userAuth } = require("../middlewares/auth");
 const ConnectionReqModel = require("../models/connectionReq");
 const { connection } = require("mongoose");
+const User = require("../models/user");
 
 const userRouter = express.Router();
 const USER_SAFE_DATA = [
@@ -63,32 +64,39 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
 
 userRouter.get("/feed", userAuth, async (req, res) => {
   try {
-    //user should see al the user cards erxcept
-    //his own card and the cards
-    //his connections
-    //ignored people
-    // alredyt sent request
-    //accepted request
-    //rejected request
-    //pending request
-    //interested request
+    // User should see all the user cards except:
+    // - Their own card
+    // - Their connections
+    // - Ignored people
+    // - Already sent requests
+    // - Accepted requests
+    // - Rejected requests
+    // - Pending requests
+    // - Interested requests
 
     const loggedInUser = req.user;
 
-    //find all the connections requestes(send + recived)
-
+    // Find all the connection requests (sent + received)
     const connectionRequests = await ConnectionReqModel.find({
       $or: [{ fromUserId: loggedInUser._id }, { toUserId: loggedInUser._id }],
     }).select("fromUserId toUserId status");
 
-    const hideUsersFromFeed = new set();
+    const hideUsersFromFeed = new Set();
+    connectionRequests.forEach((connectionReq) => {
+      hideUsersFromFeed.add(connectionReq.fromUserId.toString());
+      hideUsersFromFeed.add(connectionReq.toUserId.toString());
+    });
 
-    res.send(connectionRequests);
+    const users = await User.find({
+      $and: [
+        { _id: { $nin: Array.from(hideUsersFromFeed) } },
+        { _id: { $ne: loggedInUser._id } },
+      ],
+    }).select(USER_SAFE_DATA);
+
+    res.send(users);
   } catch (err) {
-    res
-      .status(400)
-      .json({ message: "Error while fetching feed: " + err.message });
+    res.status(400).json({ message: "Error while fetching feed: " + err.message });
   }
 });
-
 module.exports = userRouter;
