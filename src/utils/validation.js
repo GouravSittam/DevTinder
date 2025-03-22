@@ -38,5 +38,4 @@ const validatePasswordUpdate = (req) => {
     throw new Error("Password is not strong");
   }
 };
-
 module.exports = { validateSignUpData, validateEditProfileData ,validatePasswordUpdate};
