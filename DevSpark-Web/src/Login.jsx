@@ -3,13 +3,21 @@ import axios from "axios";
 
 const Login = () => {
   const [emailID, setEmailId] = useState("grrrv@gmail.com");
-  const [password, setPassword] = useState("$2b$09$9fTGdBnZZMP1Ae9HrZo78ubN3KcgWs5/4cDitQGBpBf/VT2n3Q2a6");
+  const [password, setPassword] = useState(
+    "$2b$09$9fTGdBnZZMP1Ae9HrZo78ubN3KcgWs5/4cDitQGBpBf/VT2n3Q2a6"
+  );
   const handleLogin = async () => {
     try {
-      await axios.post("http://localhost:7777/login", {
-        emailID,
-        password,
-      });
+      await axios.post(
+        "http://localhost:7777/login",
+        {
+          emailID,
+          password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
     } catch (e) {
       console.error(e);
     }
@@ -35,7 +43,7 @@ const Login = () => {
               <legend className="fieldset-legend">Password</legend>
               <input
                 type="password"
-                value={password} 
+                value={password}
                 className="input"
                 placeholder="********"
                 onChange={(e) => setPassword(e.target.value)}
@@ -43,7 +51,9 @@ const Login = () => {
             </fieldset>
           </div>
           <div className="card-actions justify-center m-2">
-            <button className="btn btn-primary " onClick={handleLogin}>Login</button>
+            <button className="btn btn-primary " onClick={handleLogin}>
+              Login
+            </button>
           </div>
         </div>
       </div>
