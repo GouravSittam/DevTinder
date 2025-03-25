@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { addUser } from "./utils/userSlice";
 
 const Login = () => {
   const [emailID, setEmailId] = useState("grrrv@gmail.com");
   const [password, setPassword] = useState(
     "$2b$09$9fTGdBnZZMP1Ae9HrZo78ubN3KcgWs5/4cDitQGBpBf/VT2n3Q2a6"
   );
+  const dispatch =useDispatch();
   const handleLogin = async () => {
     try {
-      await axios.post(
+      const res = await axios.post(
         "http://localhost:7777/login",
         {
           emailID,
@@ -18,6 +21,8 @@ const Login = () => {
           withCredentials: true,
         }
       );
+      console.log(res.data)
+      dispatch(addUser(res.data));
     } catch (e) {
       console.error(e);
     }
