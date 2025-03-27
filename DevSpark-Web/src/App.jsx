@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import appStore from "./utils/appStore";
 import Feed from "./components/Feed";
 
+
 const App = () => {
   return (
     <Provider store={appStore}>
