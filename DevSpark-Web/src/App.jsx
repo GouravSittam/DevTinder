@@ -7,7 +7,6 @@ import { Provider } from "react-redux";
 import appStore from "./utils/appStore";
 import Feed from "./components/Feed";
 
-
 const App = () => {
   return (
     <Provider store={appStore}>
@@ -19,7 +18,6 @@ const App = () => {
             <Route path="profile" element={<Profile />} />
           </Route>
         </Routes>
-        
       </BrowserRouter>
     </Provider>
   );
