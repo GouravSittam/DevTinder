@@ -1,9 +1,24 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { BASE_URL } from "../utils/constants";
+import axios from "axios"; 
+import { removeUser } from "../utils/userSlice";
 
 const NavBar = () => {
   const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await axios.post(BASE_URL + "/logout", {}, { withCredentials: true });
+      dispatch(removeUser()); 
+      return navigate("/login"); 
+    } catch (err) {
+      console.error("Logout failed:", err.message);
+    }
+  };
 
   return (
     <div>
@@ -14,7 +29,7 @@ const NavBar = () => {
           </Link>
         </div>
         <div className="flex-none">
-          {user && (
+          {user ? (
             <div className="dropdown dropdown-end mx-4 flex items-center">
               <p className="px-4">Welcome, {user.firstName}</p>
               <div
@@ -23,7 +38,10 @@ const NavBar = () => {
                 className="btn btn-ghost btn-circle avatar"
               >
                 <div className="w-10 rounded-full">
-                  <img alt="User" src={user.photoURL || "/default-avatar.png"} />
+                  <img
+                    alt="User"
+                    src={user.photoURL || "/default-avatar.png"} // Fallback avatar
+                  />
                 </div>
               </div>
               <ul
@@ -39,10 +57,14 @@ const NavBar = () => {
                   <a>Settings</a>
                 </li>
                 <li>
-                  <a>Logout</a>
+                  <a onClick={handleLogout}>Logout</a>
                 </li>
               </ul>
             </div>
+          ) : (
+            <Link to="/login" className="btn btn-primary">
+              Login
+            </Link>
           )}
         </div>
       </div>
