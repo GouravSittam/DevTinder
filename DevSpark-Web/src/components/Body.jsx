@@ -10,7 +10,7 @@ import axios from "axios";
 const Body = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userData = useSelector((store)=>store.user);
+  const userData = useSelector((store) => store.user);
 
   const fetchUser = async () => {
     try {
@@ -28,7 +28,7 @@ const Body = () => {
   };
 
   useEffect(() => {
-    if(!userData) {
+    if (!userData) {
       fetchUser();
     }
   }, []);
@@ -43,4 +43,3 @@ const Body = () => {
 };
 
 export default Body;
- 
