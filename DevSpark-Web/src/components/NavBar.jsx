@@ -40,7 +40,7 @@ const NavBar = () => {
                 <div className="w-10 rounded-full">
                   <img
                     alt="User"
-                    src={user.photoURL || "/default-avatar.png"} // Fallback avatar
+                    src={user?.photoURL } // Fallback avatar
                   />
                 </div>
               </div>

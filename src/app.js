@@ -111,8 +111,9 @@ const cors = require("cors");
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
-    credentials: true,
+    origin: "http://localhost:5173", // Allow requests from this origin
+    credentials: true, // Allow cookies to be sent
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"], // Allow these HTTP methods
   })
 );
 app.use(express.json());

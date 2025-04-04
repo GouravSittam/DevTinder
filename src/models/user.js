@@ -3,13 +3,12 @@ const validator = require("validator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-
 const userSchema = new mongoose.Schema(
   {
     firstName: {
       type: String,
       required: true,
-      index:true,
+      index: true,
       minlength: 3,
       maxlength: 20,
     },
@@ -44,16 +43,21 @@ const userSchema = new mongoose.Schema(
     gender: {
       type: String,
       validate(value) {
-        if (!["male", "female", "others"].includes(value)) {
+        if (!["male", "female", "others","Male", "Female", "Others"].includes(value)) {
           throw new Error("Gender Data is Not Valid");
         }
       },
     },
     photoURL: {
       type: String,
-      default: "data:image/jpeg;base64,",
+      default:
+        "https://static.vecteezy.com/system/resources/previews/024/983/914/non_2x/simple-user-default-icon-free-png.png,",
       validate(value) {
-        if (value !== "data:image/jpeg;base64," && !validator.isURL(value)) {
+        if (
+          value !==
+            "https://static.vecteezy.com/system/resources/previews/024/983/914/non_2x/simple-user-default-icon-free-png.png" &&
+          !validator.isURL(value)
+        ) {
           throw new Error("Invalid Photo URL " + value);
         }
       },

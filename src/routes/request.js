@@ -81,9 +81,7 @@ requestRouter.post(
         });
       }
 
-      // console.log("Request ID:", requestId);
-      // console.log("Logged in User ID:", loggedInUser._id);
-
+    
       const connectionRequest = await ConnectionReqModel.findOne({
         _id: requestId,
         toUserId: loggedInUser._id,

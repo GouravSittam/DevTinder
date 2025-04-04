@@ -7,8 +7,8 @@ import { BASE_URL } from "../utils/constants";
 import { set } from "mongoose";
 
 const Login = () => {
-  const [emailID, setEmailId] = useState("validemailid@gmail.com");
-  const [password, setPassword] = useState("Gobu@56dd");
+  const [emailID, setEmailId] = useState("shavi@gmail.com");
+  const [password, setPassword] = useState("Shavi@$2b$09$kPC.KSVmWThoRaQ2tH2xRuQvScSRvfHIsfumvPw9JO2JkSzstIxZe");
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -22,9 +22,8 @@ const Login = () => {
         },
         {
           withCredentials: true,
-        },
+        }
       );
-      // console.log(res.data)
       dispatch(addUser(res.data));
       navigate("/");
     } catch (e) {
