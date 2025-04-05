@@ -21,7 +21,7 @@ const EditProfile = ({ user }) => {
 
   const dispatch = useDispatch()
 
-  console.log(firstName)
+  // console.log(firstName)
 
   useEffect(() => {
     if (user) {

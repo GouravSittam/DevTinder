@@ -40,7 +40,7 @@ const NavBar = () => {
                 <div className="w-10 rounded-full">
                   <img
                     alt="User"
-                    src={user?.photoURL } // Fallback avatar
+                    src={user?.photoURL} // Fallback avatar
                   />
                 </div>
               </div>
@@ -54,7 +54,7 @@ const NavBar = () => {
                   </Link>
                 </li>
                 <li>
-                  <a>Settings</a>
+                  <Link to="/connections">Connections</Link>
                 </li>
                 <li>
                   <a onClick={handleLogout}>Logout</a>

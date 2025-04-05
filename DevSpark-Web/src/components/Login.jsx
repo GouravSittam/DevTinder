@@ -7,8 +7,8 @@ import { BASE_URL } from "../utils/constants";
 import { set } from "mongoose";
 
 const Login = () => {
-  const [emailID, setEmailId] = useState("shavi@gmail.com");
-  const [password, setPassword] = useState("Shavi@$2b$09$kPC.KSVmWThoRaQ2tH2xRuQvScSRvfHIsfumvPw9JO2JkSzstIxZe");
+  const [emailID, setEmailId] = useState("grrrv@gmail.com");
+  const [password, setPassword] = useState("$2b$09$9fTGdBnZZMP1Ae9HrZo78ubN3KcgWs5/4cDitQGBpBf/VT2n3Q2a6");
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
