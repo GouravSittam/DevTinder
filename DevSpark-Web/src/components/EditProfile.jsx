@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux"
 import { addUser } from "../utils/userSlice"
 import { User, Save, Loader2, Camera, Info, Calendar, Users, Check } from "lucide-react"
 
+
 const EditProfile = ({ user }) => {
   const [firstName, setFirstName] = useState(user?.firstName || "")
   const [lastName, setLastName] = useState(user?.lastName || "")
