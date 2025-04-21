@@ -3,7 +3,7 @@
 DevConnect is a Tinder-inspired matchmaking platform exclusively for developers to connect, collaborate, and network based on their skills and interests. #devconnect
 
 🔗 **Live Demo: 154.12.158.12
-📂 **GitHub Repository:** [https://github.com/Abhinandan-Sah/DevConnect](https://github.com/Abhinandan-Sah/DevConnect)
+📂 **GitHub Repository:** [https://github.com/GouravSittam/DevTinder.git](https://github.com/GouravSittam/DevTinder.git)
 
 ---
 
@@ -39,5 +39,5 @@ DevConnect is a Tinder-inspired matchmaking platform exclusively for developers 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Abhinandan-Sah/DevConnect.git
+https://github.com/GouravSittam/DevTinder.git
 cd DevConnect
