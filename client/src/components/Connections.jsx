@@ -56,7 +56,7 @@ const Connections = () => {
             Start browsing the feed and connect with developers who match your interests.
           </p>
           <a
-            href="/feed"
+            href="/"
             className="inline-flex items-center justify-center gap-2 py-2 px-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium rounded-md shadow hover:from-purple-700 hover:to-indigo-700 transition-all duration-200"
           >
             <ExternalLink className="h-4 w-4" />
