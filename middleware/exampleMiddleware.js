@@ -1,6 +1,0 @@
-module.exports = function(req, res, next) {
-    // ...existing code...
-    // Use next() to pass control to the next middleware function
-    next();
-    // ...existing code...
-};

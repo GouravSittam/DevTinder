@@ -1,0 +1,37 @@
+services:
+  mongodb:
+    image: mongo:6.0
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+  server:
+    build:
+      context: ./server
+    container_name: devconnect-server
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./server/.env
+    depends_on:
+      - mongodb
+    networks:
+      - devconnect-network
+
+  client:
+    build:
+      context: ./client
+    container_name: devconnect-client
+    ports:
+      - "5173:80"
+    depends_on:
+      - server
+    networks:
+      - devconnect-network
+
+networks:
+  devconnect-network:
+    driver: bridge
