@@ -9,8 +9,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: example
 
   server:
-    build:
-      context: ./server
+    image: gouravsittam/devspark:server
     container_name: devconnect-server
     ports:
       - "5000:5000"
@@ -22,8 +21,7 @@ services:
       - devconnect-network
 
   client:
-    build:
-      context: ./client
+    image: gouravsittam/devspark:client
     container_name: devconnect-client
     ports:
       - "5173:80"
