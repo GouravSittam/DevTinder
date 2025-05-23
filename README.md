@@ -38,7 +38,7 @@ Whether you’re looking for teammates for your next hackathon, a mentor to guid
 > **[🚀 Try DevTinder Live!](#)**  
 > (Coming soon – stay tuned!)
 
-![DevTinder Demo Screenshot](assets/demo_screenshot.png)
+<!--  ![DevTinder Demo Screenshot](assets/demo_screenshot.png) -->
 
 ---
 
