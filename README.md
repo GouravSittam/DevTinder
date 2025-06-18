@@ -1,4 +1,3 @@
-
 # 🚀 DevTinder
 
 Welcome to **DevTinder** – the ultimate developer networking and collaboration platform!  
