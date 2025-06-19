@@ -7,6 +7,7 @@ DevTinder empowers developers to connect, collaborate, and create amazing projec
 
 ## 🎯 What is DevTinder?
 
+
 DevTinder is your go-to platform for:
 
 - **Finding developer matches** for collaboration, co-founding, mentorship, or networking.
