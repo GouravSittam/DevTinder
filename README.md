@@ -2,7 +2,7 @@
 
 DevConnect is a Tinder-inspired matchmaking platform exclusively for developers to connect, collaborate, and network based on their skills and interests.
 
-🔗 **Live Demo:** www.devconnects.tech
+🔗 **Live Demo:** 
 📂 **GitHub Repository:** [https://github.com/GouravSittam/DevConnect](https://github.com/GouravSittam/DevConnect)
 
 ---
