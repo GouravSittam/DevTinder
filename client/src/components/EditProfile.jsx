@@ -1,64 +1,96 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import axios from "axios"
-import { BASE_URL } from "../utils/constants"
-import { useDispatch } from "react-redux"
-import { addUser } from "../utils/userSlice"
-import { User, Save, Loader2, Camera, Info, Calendar, Users, Check } from "lucide-react"
+import { useEffect, useRef, useState } from "react";
+import axios from "axios";
+import { BASE_URL } from "../utils/constants";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
+import {
+  User,
+  Save,
+  Loader2,
+  Camera,
+  Info,
+  Calendar,
+  Users,
+  Check,
+} from "lucide-react";
+import Select from "react-select";
+import { techSkillsOptions } from "../utils/constants";
 
 const EditProfile = ({ user }) => {
-  const [firstName, setFirstName] = useState(user?.firstName || "")
-  const [lastName, setLastName] = useState(user?.lastName || "")
-  const [about, setAbout] = useState(user?.about || "")
-  const [gender, setGender] = useState(user?.gender || "")
-  const [age, setAge] = useState(user?.age || "")
-  const [photoURL, setPhotoURL] = useState(user?.photoURL || "")
-  const [error, setError] = useState("")
-  const [showToast, setShowToast] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [firstName, setFirstName] = useState(user?.firstName || "");
+  const [lastName, setLastName] = useState(user?.lastName || "");
+  const [about, setAbout] = useState(user?.about || "");
+  const [gender, setGender] = useState(user?.gender || "");
+  const [age, setAge] = useState(user?.age || "");
+  const [photoURL, setPhotoURL] = useState(user?.photoURL || "");
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [error, setError] = useState("");
+  const [showToast, setShowToast] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [skills, setSkills] = useState(user?.skills || []);
+  const [skillSearch, setSkillSearch] = useState("");
+  const fileInputRef = useRef(null);
 
-  const dispatch = useDispatch()
 
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (user) {
-      setFirstName(user.firstName || "")
-      setLastName(user.lastName || "")
-      setAbout(user.about || "")
-      setGender(user.gender || "")
-      setAge(user.age || "")
-      setPhotoURL(user.photoURL || "")
+      setFirstName(user.firstName || "");
+      setLastName(user.lastName || "");
+      setAbout(user.about || "");
+      setGender(user.gender || "");
+      setAge(user.age || "");
+      setPhotoURL(user.photoURL || "");
     }
-  }, [])
+  }, []);
 
   const saveProfile = async () => {
-    setError("")
+    setError("");
     try {
-      setIsLoading(true)
+      setIsLoading(true);
+
+      const formData = new FormData();
+      formData.append("firstName", firstName);
+      formData.append("lastName", lastName);
+      formData.append("about", about);
+      formData.append("gender", gender);
+      formData.append("age", age);
+      formData.append("skills", JSON.stringify(skills));
+      if (selectedPhoto) {
+        formData.append("photo", selectedPhoto);
+      }
+
       const response = await axios.patch(
         BASE_URL + "/profile/edit",
-        {
-          firstName,
-          lastName,
-          age,
-          photoURL,
-          gender,
-          about,
-        },
-        { withCredentials: true },
-      )
-      dispatch(addUser(response?.data?.data))
-      setShowToast(true)
+        formData,
+        { withCredentials: true, headers: { "Content-Type": "multipart/form-data" } }
+      );
+
+      dispatch(addUser(response?.data?.data));
+      setPhotoURL(response?.data?.data?.photoURL || ""); // <-- update photoURL state here
+      setSelectedPhoto(null);
+      setShowToast(true);
+      if(fileInputRef.current){
+        fileInputRef.current.value = "";
+      }
       const i = setTimeout(() => {
-        setShowToast(false)
-      }, 3000)
+        setShowToast(false);
+      }, 3000);
     } catch (err) {
-      setError(err?.response?.data || "Something went wrong")
+      setError(err?.response?.data || "Something went wrong");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
+
+    // Filter skills based on search
+  const filteredSkills = techSkillsOptions.filter(opt =>
+    opt.label.toLowerCase().includes(skillSearch.toLowerCase()) &&
+    !skills.includes(opt.value)
+  );
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -74,7 +106,11 @@ const EditProfile = ({ user }) => {
               <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2">
                 <div className="h-32 w-32 rounded-full border-4 border-white dark:border-gray-800 overflow-hidden bg-white dark:bg-gray-700 transition-colors duration-200">
                   {photoURL ? (
-                    <img src={photoURL || "/placeholder.svg"} alt="Profile" className="h-full w-full object-cover" />
+                    <img
+                      src={photoURL ? `${photoURL}?${Date.now()}` : "/placeholder.svg"}
+                      alt="Profile"
+                      className="h-full w-full object-cover"
+                    />
                   ) : (
                     <div className="h-full w-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center">
                       <span className="text-white text-2xl font-bold">
@@ -82,7 +118,7 @@ const EditProfile = ({ user }) => {
                         {lastName?.charAt(0)}
                       </span>
                     </div>
-                  )}
+                  )} 
                 </div>
               </div>
             </div>
@@ -171,12 +207,14 @@ const EditProfile = ({ user }) => {
                 </label>
                 <input
                   id="photoURL"
-                  type="text"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-200"
-                  value={photoURL}
-                  onChange={(e) => setPhotoURL(e.target.value)}
-                  placeholder="https://example.com/photo.jpg"
+                  type="file"
+                  ref={fileInputRef}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-200 file:border file:border-gray-400 file:rounded file:px-2 file:py-1"
+                  onChange={(e)=> {setSelectedPhoto(e.target.files[0])
+                  }}
+                  accept="image/*"
                 />
+
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -237,6 +275,64 @@ const EditProfile = ({ user }) => {
                 </div>
               </div>
 
+       {/* Skills Section */}
+      <div className="space-y-2 mb-6">
+        <label
+          htmlFor="skills"
+          className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-1 transition-colors duration-200"
+        >
+          Skills
+        </label>
+        {/* Selected skills with cross to remove */}
+        <div className="flex flex-wrap gap-2 mb-2">
+          {skills.map(skill => (
+            <div
+              key={skill}
+              className="badge badge-primary gap-1 flex items-center"
+            >
+              {techSkillsOptions.find(opt => opt.value === skill)?.label || skill}
+              <button
+                type="button"
+                className="ml-1 text-xs text-white hover:text-red-200"
+                onClick={() => setSkills(skills.filter(s => s !== skill))}
+                aria-label="Remove skill"
+              >
+                ✕
+              </button>
+            </div>
+          ))}
+        </div>
+        {/* DaisyUI dropdown with search */}
+        <div className="dropdown w-full">
+          <input
+            type="text"
+            className="input input-bordered w-full mb-1  border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-200"
+            placeholder="Search skills..."
+            value={skillSearch}
+            onChange={e => setSkillSearch(e.target.value)}
+          />
+          <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 dark:bg-gray-800 rounded-box w-full max-h-48 overflow-auto">
+            {filteredSkills.length === 0 && (
+              <li className="text-gray-400 px-2 py-1">No skills found</li>
+            )}
+            {filteredSkills.map(opt => (
+              <li key={opt.value}>
+                <button
+                  type="button"
+                  className="w-full text-left px-2 py-1 hover:bg-purple-100 dark:hover:bg-gray-700"
+                  onClick={() => {
+                    setSkills([...skills, opt.value]);
+                    setSkillSearch("");
+                  }}
+                >
+                  {opt.label}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
               <div className="space-y-2 mb-6">
                 <label
                   htmlFor="about"
@@ -289,8 +385,7 @@ const EditProfile = ({ user }) => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default EditProfile
-
+export default EditProfile;

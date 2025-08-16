@@ -8,8 +8,8 @@ const feedSlice = createSlice({
             return action.payload; 
         }, 
         removeUserFromFeed: (state, action) => {
-            console.log("State before filtering:");
-            state.forEach(user => console.log(user));
+            // console.log("State before filtering:");
+            // state.forEach(user => console.log(user));
             return state.filter(user => user._id !== action.payload);
         }
     }

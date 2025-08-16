@@ -13,34 +13,29 @@ const validateSignUpData = (req) => {
 };
 
 const validateLoginData = (req) => {
-  const { emailId, password } = req.body;
+  const {emailId, password} = req.body; 
 
-  if (!validator.isEmail(emailId)) {
+  if(!validator.isEmail(emailId)){
     throw new Error("Incorrect Email Address");
-  } else if (!validator.isStrongPassword(password)) {
+  }
+  else if(!validator.isStrongPassword(password)){
     throw new Error("Incorrect Password");
   }
-};
+}
 
 const validateEditProfileData = (req) => {
   const allowedEditFields = [
     "firstName",
-    "lastName",
+    "lastName", 
     "photoURL",
-    "gender",
+    "gender", 
     "age",
     "skills",
-    "about",
-  ];
-  const isEditAllowed = Object.keys(req.body).every((k) =>
-    allowedEditFields.includes(k)
-  );
+    "about"
+  ]
+  const isEditAllowed = Object.keys(req.body).every((k)=> allowedEditFields.includes(k))
 
   return isEditAllowed;
-};
+}
 
-module.exports = {
-  validateSignUpData,
-  validateLoginData,
-  validateEditProfileData,
-};
+module.exports = { validateSignUpData, validateLoginData,validateEditProfileData };

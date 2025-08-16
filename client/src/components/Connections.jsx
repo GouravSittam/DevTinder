@@ -1,35 +1,42 @@
-"use client"
+"use client";
 
-import axios from "axios"
-import { useEffect, useState } from "react"
-import { BASE_URL } from "../utils/constants"
-import { useDispatch, useSelector } from "react-redux"
-import { addConnections } from "../utils/connectionSlice"
-import { Users, User, Loader2, MessageSquare, ExternalLink } from "lucide-react"
-import { Link } from "react-router-dom"
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { BASE_URL } from "../utils/constants";
+import { useDispatch, useSelector } from "react-redux";
+import { addConnections } from "../utils/connectionSlice";
+import {
+  Users,
+  User,
+  Loader2,
+  MessageSquare,
+  ExternalLink,
+} from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Connections = () => {
-  const dispatch = useDispatch()
-  const connections = useSelector((store) => store.connections)
-  const [isLoading, setIsLoading] = useState(true)
-
+  const dispatch = useDispatch();
+  const connections = useSelector((store) => store.connections);
+  const [isLoading, setIsLoading] = useState(true);
+  const onlineUsers = useSelector((state) => state.onlineUsers);
   const fetchConnections = async () => {
     try {
-      setIsLoading(true)
+      setIsLoading(true);
       const res = await axios.get(BASE_URL + "/user/connections", {
         withCredentials: true,
-      })
-      dispatch(addConnections(res?.data?.data))
+      });
+      dispatch(addConnections(res?.data?.data));
     } catch (err) {
-      console.log(err?.response?.data || "Something went wrong")
+      console.log(err?.response?.data || "Something went wrong");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchConnections()
-  }, [])
+    fetchConnections();
+
+  }, []);
 
   if (isLoading) {
     return (
@@ -39,7 +46,7 @@ const Connections = () => {
           Loading connections...
         </h2>
       </div>
-    )
+    );
   }
 
   if (!connections || connections.length === 0) {
@@ -53,10 +60,11 @@ const Connections = () => {
             No Connections Yet
           </h2>
           <p className="text-gray-600 dark:text-gray-400 mb-6 transition-colors duration-200">
-            Start browsing the feed and connect with developers who match your interests.
+            Start browsing the feed and connect with developers who match your
+            interests.
           </p>
           <a
-            href="/"
+            href="/feed"
             className="inline-flex items-center justify-center gap-2 py-2 px-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium rounded-md shadow hover:from-purple-700 hover:to-indigo-700 transition-all duration-200"
           >
             <ExternalLink className="h-4 w-4" />
@@ -64,7 +72,7 @@ const Connections = () => {
           </a>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -80,14 +88,15 @@ const Connections = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {connections.map((connection) => {
-          const { _id, firstName, lastName, photoURL, age, gender, about } = connection
+          const { _id, firstName, lastName, photoURL, age, gender, about } =
+            connection;
           return (
             <div
               key={_id}
               className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all duration-300"
             >
               <div className="flex items-center p-4 border-b border-gray-100 dark:border-gray-700 transition-colors duration-200">
-                <div className="h-16 w-16 rounded-full overflow-hidden mr-4 flex-shrink-0">
+                <div className="h-16 w-16 rounded-full overflow-hidden mr-4 flex-shrink-0 relative">
                   {photoURL ? (
                     <img
                       src={photoURL || "/placeholder.svg"}
@@ -102,6 +111,16 @@ const Connections = () => {
                       </span>
                     </div>
                   )}
+                  {/* Online/Offline Dot */}
+                  <span
+                    className={
+                      "absolute bottom-2 right-2 w-3 h-3 rounded-full border-2 border-white " +
+                      (onlineUsers.includes(_id)
+                        ? "bg-green-400"
+                        : "bg-gray-400")
+                    }
+                    title={onlineUsers.includes(_id) ? "Online" : "Offline"}
+                  ></span>
                 </div>
                 <div>
                   <h2 className="text-xl font-bold text-gray-800 dark:text-white transition-colors duration-200">
@@ -128,18 +147,19 @@ const Connections = () => {
                   </p>
                 </div>
 
-                <Link to={"/chat/"+_id}><button className="w-full flex items-center justify-center gap-2 py-2 px-4 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-200">
-                  <MessageSquare className="h-4 w-4" />
-                  Message
-                </button></Link>
+                <Link to={"/chat/" + _id}>
+                  <button className="w-full flex items-center justify-center gap-2 py-2 px-4 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-200">
+                    <MessageSquare className="h-4 w-4" />
+                    Message
+                  </button>
+                </Link>
               </div>
             </div>
-          )
+          );
         })}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Connections
-
+export default Connections;

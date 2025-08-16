@@ -12,7 +12,7 @@ const Footer = () => {
               <Code className="h-5 w-5" />
             </div>
             <span className="font-bold text-lg bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
-              DevConnect
+              DevConnects
             </span>
           </div>
 
@@ -22,7 +22,7 @@ const Footer = () => {
 
           <div className="flex space-x-4">
             <Link
-              to="https://github.com/GouravSittam"
+              to="https://github.com/Abhinandan-Sah"
               className="text-gray-500 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors duration-200"
               aria-label="GitHub"
               target="_blank"
@@ -31,7 +31,7 @@ const Footer = () => {
               <Github className="h-5 w-5" />
             </Link>
             <Link
-              to="https://x.com/Gouravv_c"
+              to="https://x.com/I_AbhinandanSah"
               className="text-gray-500 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors duration-200"
               aria-label="Twitter"
               target="_blank"
@@ -40,7 +40,7 @@ const Footer = () => {
               <Twitter className="h-5 w-5" />
             </Link>
             <Link
-              to="https://www.linkedin.com/in/gouravsittam/"
+              to="https://www.linkedin.com/in/abhinandan-sah/"
               className="text-gray-500 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors duration-200"
               aria-label="LinkedIn"
               target="_blank"

@@ -5,6 +5,7 @@ const userModel = require("../models/user");
 const profileRouter= express.Router();
 const bcrypt = require("bcryptjs");
 const validator = require("validator");
+const { upload, uploadToCloudinary } = require("../utils/cloudinary");
 
 profileRouter.get("/profile/view", userAuth , async(req, res)=>{
 
@@ -17,7 +18,7 @@ profileRouter.get("/profile/view", userAuth , async(req, res)=>{
     }
 });
 
-profileRouter.patch("/profile/edit", userAuth, async(req, res)=>{
+profileRouter.patch("/profile/edit", userAuth, upload.single("photo"), async(req, res)=>{
     try{
         if(!validateEditProfileData(req)){
             throw new Error("Invalid Edit Request");
@@ -25,7 +26,22 @@ profileRouter.patch("/profile/edit", userAuth, async(req, res)=>{
 
         const loggedInUser = req.user;
 
-        Object.keys(req.body).forEach((key) =>loggedInUser[key]=req.body[key]);
+        if(req.file){
+            const photoURL = await uploadToCloudinary(req.file.buffer);
+            loggedInUser.photoURL = photoURL;
+        }
+
+        Object.keys(req.body).forEach((key) => {
+            if(key === "skills") {
+                try {
+                    loggedInUser.skills = JSON.parse(req.body.skills);
+                } catch {
+                    loggedInUser.skills = [];
+                }
+            } else if(key !== "photo") {
+                loggedInUser[key] = req.body[key];
+            }
+        });
         await loggedInUser.save();
 
         res.json({message: `${loggedInUser.firstName}, your pofile edited successfully`, data: loggedInUser});

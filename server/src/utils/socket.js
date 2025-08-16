@@ -9,18 +9,35 @@ const getSecretRoomId = ({ userId, targetUserId }) => {
     .digest("hex");
 };
 
+const onlineUsers = new Map();
+
 const initilizeSocket = (server) => {
   const io = socket(server, {
     cors: {
       origin: "http://localhost:5173",
     },
   });
-
   io.on("connection", (socket) => {
+    // listen for user online event
+    socket.on("userOnline", ({ userId }) => {
+      onlineUsers.set(userId, socket.id);
+      io.emit("updateUserStatus", Array.from(onlineUsers.keys()));
+    });
+
+    // Listen for user offline event (on disconnect)
+    socket.on("userOffline", ({ userId }) => {
+      onlineUsers.delete(userId);
+      io.emit("updateUserStatus", Array.from(onlineUsers.keys()));
+    });
+
+    // Listen for typing event
+    socket.on("typing", ({ userId, isTyping }) => {
+      socket.broadcast.emit("userTyping", { userId, isTyping });
+    });
+
     // Handle events
     socket.on("joinChat", ({ firstName, userId, targetUserId }) => {
       const roomId = getSecretRoomId({ userId, targetUserId });
-      console.log(firstName + " Joined Room: " + roomId);
       socket.join(roomId);
     });
 
@@ -47,7 +64,12 @@ const initilizeSocket = (server) => {
           });
 
           await chat.save();
-          io.to(roomId).emit("messageReceived", { firstName, lastName, text, timestamp: new Date() });
+          io.to(roomId).emit("messageReceived", {
+            firstName,
+            lastName,
+            text,
+            timestamp: new Date(),
+          });
         } catch (err) {
           console.log(err);
         }

@@ -1,53 +1,60 @@
-"use client";
+"use client"
 
-import { useEffect, useState } from "react";
-import { BASE_URL } from "../utils/constants";
-import { useDispatch, useSelector } from "react-redux";
-import { addFeed } from "../utils/feedSlice";
-import axios from "axios";
-import UserCard from "./UserCard";
-import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { useEffect, useState } from "react"
+import { BASE_URL } from "../utils/constants"
+import { useDispatch, useSelector } from "react-redux"
+import { addFeed } from "../utils/feedSlice"
+import axios from "axios"
+import UserCard from "./UserCard"
+import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react"
+import { jaccardSimilarity } from "../utils/constants"
 
 const Feed = () => {
   const feed = useSelector((store) => store.feed);
+  const currentUser = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // if (!feed) {
-    //   getFeed()
-    // } else {
-    //   setIsLoading(false)
-    // }
-    getFeed();
-  }, []);
+      getFeed()
+
+  }, [])
 
   const getFeed = async () => {
     try {
-      setIsLoading(true);
+      setIsLoading(true)
       const response = await axios.get(BASE_URL + "/feed", {
         withCredentials: true,
-      });
-      dispatch(addFeed(response?.data?.data));
+      })
+      dispatch(addFeed(response?.data?.data))
     } catch (err) {
-      console.log(err?.response?.data || "Something went wrong");
+      console.log(err?.response?.data || "Something went wrong")
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
   };
+
+  // Sort feed by Jaccard similarity to current user
+  const sortedFeed = feed
+    ? [...feed].sort((a, b) => {
+        const simA = jaccardSimilarity(currentUser?.skills || [], a.skills || [])
+        const simB = jaccardSimilarity(currentUser?.skills || [], b.skills || [])
+        return simB - simA // descending order
+      })
+    : []
 
   const handlePrevious = () => {
     if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
+      setCurrentIndex(currentIndex - 1)
     }
-  };
+  }
 
   const handleNext = () => {
     if (feed && currentIndex < feed.length - 1) {
-      setCurrentIndex(currentIndex + 1);
+      setCurrentIndex(currentIndex + 1)
     }
-  };
+  }
 
   if (isLoading) {
     return (
@@ -57,7 +64,7 @@ const Feed = () => {
           Finding developers...
         </h2>
       </div>
-    );
+    )
   }
 
   if (!feed || feed.length === 0) {
@@ -66,12 +73,11 @@ const Feed = () => {
         <div className="bg-gradient-to-br from-purple-500 to-indigo-600 text-white p-8 rounded-xl shadow-lg max-w-md text-center">
           <h2 className="text-2xl font-bold mb-4">No New Developers Found!</h2>
           <p className="text-white/80">
-            We're currently looking for more developers that match your profile.
-            Check back soon!
+            We're currently looking for more developers that match your profile. Check back soon!
           </p>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -93,13 +99,11 @@ const Feed = () => {
           </div>
         )}
 
-        {feed.map((user, index) => (
+        {sortedFeed.map((user, index) => (
           <div
             key={user?._id || user?.emailId}
             className={`transition-all duration-500 ease-in-out ${
-              index === currentIndex
-                ? "opacity-100 scale-100"
-                : "opacity-0 scale-95 hidden"
+              index === currentIndex ? "opacity-100 scale-100" : "opacity-0 scale-95 hidden"
             }`}
           >
             <UserCard user={user} />
@@ -141,7 +145,8 @@ const Feed = () => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Feed;
+export default Feed
+

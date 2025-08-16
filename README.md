@@ -1,205 +1,142 @@
+# 🚀 DevConnect - Developer Matchmaking Platform
 
-# 🚀 DevTinder
+DevConnect is a Tinder-inspired matchmaking platform exclusively for developers to connect, collaborate, and network based on their skills and interests.
 
-Welcome to **DevTinder** – the ultimate developer networking and collaboration platform!  
-DevTinder empowers developers to connect, collaborate, and create amazing projects together, all through a fun, swipe-based interface inspired by modern social apps.
-
----
-
-## 🎯 What is DevTinder?
-
-
-DevTinder is your go-to platform for:
-
-- **Finding developer matches** for collaboration, co-founding, mentorship, or networking.
-- **Showcasing your skills and projects** to the world.
-- **Discovering passionate techies** who share your vision and interests.
-- **Building meaningful connections** that go beyond code.
-
-Whether you’re looking for teammates for your next hackathon, a mentor to guide your journey, or just want to meet like-minded devs, DevTinder brings the community to your fingertips!
+🔗 **Live Demo:** www.devconnects.tech 
+📂 **GitHub Repository:** [https://github.com/Abhinandan-Sah/DevConnect](https://github.com/Abhinandan-Sah/DevConnect)
 
 ---
 
-## 🏆 Key Features
+## ✨ Features
 
-- **Modern Authentication:** Secure sign up and login with JWT, bcrypt & social logins (coming soon!)
-- **Personalized Developer Profiles:** Add your skills, interests, bio, GitHub/portfolio links, and projects.
-- **Swipe to Connect:** Swipe right to connect, left to pass—networking made fun!
-- **Project Showcases:** Display your proudest projects, browse others', and invite collaborators.
-- **Intelligent Matching:** Filter by tech stack, experience, interests, and project types.
-- **Real-Time Messaging:** Built-in chat for instant collaboration (powered by Socket.io).
-- **Notifications:** Get notified of new matches, messages, and project invites.
-- **Mobile-First Responsive UI:** Seamless experience on mobile, tablet, and desktop.
-- **Dark Mode:** Because developers love it. 🌑
-- **Open Source & Extensible:** Easy to contribute, fork, and customize!
-
----
-
-## 🌐 Live Demo
-
-> **[🚀 Try DevTinder Live!](#)**  
-> (Coming soon – stay tuned!)
-
-<!--  ![DevTinder Demo Screenshot](assets/demo_screenshot.png) -->
+- 🔐 **Secure Authentication:** JWT-based authentication for safe and persistent sessions.
+- 🎯 **Personalized Matchmaking:** Connect with developers based on skills, interests, and preferences.
+- 💬 **Real-time Messaging:** Chat instantly with your matches.
+- 📄 **Detailed Profiles:** Showcase your skills, interests, and experience.
+- 🔄 **Swipe & Match:** Swipe to like or pass on other developers.
+- 📨 **Connection Requests:** Send and manage connection requests.
+- 🗂️ **Connections Management:** View and manage your developer connections.
+- ⚙️ **Full Stack MERN Application:** Built with modern technologies for scalability and performance.
+- 🌗 **Dark Mode:** Seamless light/dark theme support.
 
 ---
 
-## 🏗️ Tech Stack
+## 🛠️ Tech Stack
 
-| Layer         | Technology                         |
-|---------------|------------------------------------|
-| Frontend      | React.js, Redux, Tailwind CSS      |
-| Backend       | Node.js, Express.js                |
-| Database      | MongoDB (Mongoose ORM)             |
-| Auth          | JWT, bcrypt                        |
-| Real-Time     | Socket.io                          |
-| Deployment    | Vercel/Netlify (Frontend), Render/Heroku (Backend) |
+**Frontend:**
+- ReactJS (with Hooks)
+- Redux Toolkit (state management)
+- Tailwind CSS (utility-first styling)
+- React Router DOM (routing)
+- Axios (API requests)
+
+**Backend:**
+- Node.js
+- Express.js
+- MongoDB (Mongoose ODM)
+- JWT Authentication
+- Redis (for session/token management)
+- Socket.io (real-time chat)
+- Nginx (reverse proxy, production)
+- CORS & Security Middlewares
 
 ---
 
-## ⚡️ Quick Start
+## 🚧 Installation & Setup
 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/GouravSittam/DevTinder.git
-cd DevTinder
+git clone https://github.com/Abhinandan-Sah/DevConnect.git
+cd DevConnect
 ```
 
-### 2. Backend Setup
+### 2. Setup the Client
 
 ```bash
-cd backend
+cd client
 npm install
+npm run dev
 ```
+The client will run on [http://localhost:5173](http://localhost:5173) by default.
 
-Create a `.env` file in `/backend`:
+### 3. Setup the Server
+
+```bash
+cd ..
+cd server
+npm install
+npm run dev
+```
+The server will run on [http://localhost:5000](http://localhost:5000) by default.
+
+### 4. Environment Variables
+
+Create a `.env` file in the `server` directory with the following variables:
 
 ```env
-PORT=5000
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
-```
-
-Start the backend server:
-
-```bash
-npm start
-```
-
-### 3. Frontend Setup
-
-```bash
-cd ../frontend
-npm install
-```
-
-Create a `.env` file in `/frontend`:
-
-```env
-REACT_APP_API_URL=http://localhost:5000
-```
-
-Run the frontend:
-
-```bash
-npm start
-```
-
-### 4. Access DevTinder
-
-Visit [http://localhost:3000](http://localhost:3000) in your browser!
-
----
-
-## 🗂️ Project Structure
-
-```
-DevTinder/
-├── backend/
-│   ├── controllers/
-│   ├── middleware/
-│   ├── models/
-│   ├── routes/
-│   └── server.js
-├── frontend/
-│   ├── public/
-│   └── src/
-│       ├── assets/
-│       ├── components/
-│       ├── pages/
-│       ├── redux/
-│       ├── utils/
-│       ├── App.js
-│       └── index.js
-└── README.md
+SERVER_PORT=5000
+REDIS_URL=redis://localhost:6379
+SERVER_ENV=development
 ```
 
 ---
 
-## 📝 How to Use
+## 🌐 Deployment
 
-1. **Register or log in** to your DevTinder account.
-2. **Complete your profile** – add your skills, bio, and portfolio/projects.
-3. **Start swiping!** Connect with other developers you find interesting.
-4. **Chat instantly** with your matches to discuss ideas or projects.
-5. **Browse projects** and join or invite others to build together!
-
----
-
-## 💡 Roadmap & Upcoming Features
-
-- [ ] OAuth with GitHub, Google, LinkedIn
-- [ ] Video/voice chat in-app
-- [ ] Team formation & project management tools
-- [ ] Public developer feeds & posts
-- [ ] AI-powered match recommendations
-- [ ] Advanced search & filtering
-- [ ] In-app code snippets and collaborative editing
+- **Frontend:** Can be deployed on Vercel, Netlify, or Azure Static Web Apps.
+- **Backend:** Can be deployed on Azure VM, Render, or any VPS with Node.js support.
+- **Reverse Proxy:** Use Nginx to serve the backend over HTTPS and handle SSL termination.
+- **Environment:** Update CORS and API URLs for production in `client/src/utils/constants.js` and `server/src/app.js`.
 
 ---
 
-## 🤝 Contributing
+## 📦 Folder Structure
 
-We welcome all contributions, big or small!  
-To contribute:
-
-1. **Fork the repo**
-2. **Create a new branch**: `git checkout -b feature/your-feature`
-3. **Commit your changes**: `git commit -m 'Add feature'`
-4. **Push to your branch**: `git push origin feature/your-feature`
-5. **Open a Pull Request**
-
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for more details.
-
----
-
-## 🛡️ License
-
-Distributed under the MIT License.  
-See [`LICENSE`](LICENSE) for more details.
+```
+DevConnect/
+│
+├── client/         # React frontend
+│   ├── src/
+│   └── ...
+│
+├── server/         # Node.js backend
+│   ├── src/
+│   └── ...
+│
+├── README.md
+└── ...
+```
 
 ---
 
-## 📣 Contact & Community
+## 🧑‍💻 Contributing
 
-- **Author:** [Gourav Sittam](https://github.com/GouravSittam)
-- **Issues & Suggestions:** [Submit here](https://github.com/GouravSittam/DevTinder/issues)
-- **Repository:** [github.com/GouravSittam/DevTinder](https://github.com/GouravSittam/DevTinder)
-
----
-
-## 🙏 Acknowledgements
-
-- [React](https://reactjs.org/)
-- [Node.js](https://nodejs.org/)
-- [MongoDB](https://www.mongodb.com/)
-- [Socket.io](https://socket.io/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Vercel](https://vercel.com/)
-- [Heroku](https://heroku.com/)
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/YourFeature`)
+3. Commit your changes (`git commit -m 'Add some feature'`)
+4. Push to the branch (`git push origin feature/YourFeature`)
+5. Open a Pull Request
 
 ---
 
-> _DevTinder – Building the future, one connection at a time!_ 🚀🧑‍💻
-## licence by Gourav
+## 🛡️ Security & Best Practices
+
+- Use HTTPS in production for both frontend and backend.
+- Set secure cookie options (`httpOnly`, `secure`, `sameSite`).
+- Restrict CORS origins in productions.
+- Store secrets and credentials in environment variables.
+
+---
+
+## 📞 Contact
+
+For questions, suggestions, or support, open an issue or contact [Abhinandan Sah](https://github.com/Abhinandan-Sah).
+
+---
+
+## 📃 License By 
+
+This project is licensed by Abhinandan Sah

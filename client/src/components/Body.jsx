@@ -21,6 +21,8 @@ const Body = () => {
     if (!userData) {
       fetchUser()
     }
+
+    
   }, [])
 
   const fetchUser = async () => {

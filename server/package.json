@@ -2,13 +2,10 @@
   "name": "devconnect",
   "version": "1.0.0",
   "description": "Tinder for developers",
-  "main": "dist/app.js",
+  "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
-    "start": "node dist/app.js",
-    "build": "tsc",
-    "lint": "eslint . --ext .ts",
-    "test": "jest"
+    "dev": "nodemon src/app.js",
+    "start": "node src/app.js"
   },
   "keywords": [
     "nodejs",
@@ -19,6 +16,7 @@
   "dependencies": {
     "@aws-sdk/client-ses": "^3.782.0",
     "bcryptjs": "^3.0.2",
+    "cloudinary": "^2.7.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "date-fns": "^4.1.0",
@@ -26,23 +24,10 @@
     "express": "^4.21.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.8.3",
+    "multer": "^2.0.2",
     "node-cron": "^3.0.3",
+    "redis": "^5.5.6",
     "socket.io": "^4.8.1",
     "validator": "^13.12.0"
-  },
-  "devDependencies": {
-    "@types/bcryptjs": "^2.4.2",
-    "@types/cors": "^2.8.13",
-    "@types/express": "^4.17.17",
-    "@types/jest": "^29.5.0",
-    "@types/jsonwebtoken": "^9.0.1",
-    "@types/node": "^18.15.11",
-    "@typescript-eslint/eslint-plugin": "^5.57.1",
-    "@typescript-eslint/parser": "^5.57.1",
-    "eslint": "^8.37.0",
-    "jest": "^29.5.0",
-    "ts-jest": "^29.1.0",
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^5.0.3"
   }
 }
