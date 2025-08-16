@@ -11,7 +11,7 @@
     "nodejs",
     "javascript"
   ],
-  "author": "Abhinandan Sah",
+  "author": "Gourav Chaudhary",
   "license": "ISC",
   "dependencies": {
     "@aws-sdk/client-ses": "^3.782.0",

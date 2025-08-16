@@ -2,8 +2,8 @@
 
 DevConnect is a Tinder-inspired matchmaking platform exclusively for developers to connect, collaborate, and network based on their skills and interests.
 
-🔗 **Live Demo:** www.devconnects.tech 
-📂 **GitHub Repository:** [https://github.com/Abhinandan-Sah/DevConnect](https://github.com/Abhinandan-Sah/DevConnect)
+🔗 **Live Demo:** www.devconnects.tech
+📂 **GitHub Repository:** [https://github.com/GouravSittam/DevConnect](https://github.com/GouravSittam/DevConnect)
 
 ---
 
@@ -24,6 +24,7 @@ DevConnect is a Tinder-inspired matchmaking platform exclusively for developers 
 ## 🛠️ Tech Stack
 
 **Frontend:**
+
 - ReactJS (with Hooks)
 - Redux Toolkit (state management)
 - Tailwind CSS (utility-first styling)
@@ -31,6 +32,7 @@ DevConnect is a Tinder-inspired matchmaking platform exclusively for developers 
 - Axios (API requests)
 
 **Backend:**
+
 - Node.js
 - Express.js
 - MongoDB (Mongoose ODM)
@@ -47,7 +49,7 @@ DevConnect is a Tinder-inspired matchmaking platform exclusively for developers 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Abhinandan-Sah/DevConnect.git
+git clone https://github.com/GouravSittam/DevConnect.git
 cd DevConnect
 ```
 
@@ -58,6 +60,7 @@ cd client
 npm install
 npm run dev
 ```
+
 The client will run on [http://localhost:5173](http://localhost:5173) by default.
 
 ### 3. Setup the Server
@@ -68,6 +71,7 @@ cd server
 npm install
 npm run dev
 ```
+
 The server will run on [http://localhost:5000](http://localhost:5000) by default.
 
 ### 4. Environment Variables
@@ -133,10 +137,10 @@ DevConnect/
 
 ## 📞 Contact
 
-For questions, suggestions, or support, open an issue or contact [Abhinandan Sah](https://github.com/Abhinandan-Sah).
+For questions, suggestions, or support, open an issue or contact [Gourav Chaudhary](https://github.com/GouravSittam).
 
 ---
 
-## 📃 License By 
+## 📃 License By
 
-This project is licensed by Abhinandan Sah
+This project is licensed by Gourav Chaudhary
