@@ -2,7 +2,10 @@
 
 > **Tinder for Developers** - Connect, Collaborate, and Code Together!
 
-A modern web application designed specifically for developers to connect with like-minded professionals, collaborate on projects, and build meaningful professional relationships in the tech community.
+🔗 **Live Demo:** www.devconnects.tech
+📂 **GitHub Repository:** [https://github.com/GouravSittam/DevConnect](https://github.com/GouravSittam/DevConnect)
+
+---
 
 ## ✨ Features
 
