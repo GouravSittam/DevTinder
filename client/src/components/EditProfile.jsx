@@ -101,7 +101,7 @@ const EditProfile = ({ user }) => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Profile Preview */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden sticky top-24 transition-colors duration-200">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden lg:sticky lg:top-24 transition-colors duration-200">
             <div className="bg-gradient-to-r from-purple-600 to-indigo-600 h-32 relative">
               <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2">
                 <div className="h-32 w-32 rounded-full border-4 border-white dark:border-gray-800 overflow-hidden bg-white dark:bg-gray-700 transition-colors duration-200">

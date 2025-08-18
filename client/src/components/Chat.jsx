@@ -134,9 +134,9 @@ const Chat = () => {
 };
 
   return (
-    <div className="w-9/10 sm:w-1/2 h-[70vh] mx-auto m-7 border rounded-sm border-gray-600 flex flex-col ">
+    <div className="w-full max-w-2xl md:max-w-3xl h-[70vh] sm:h-[75vh] md:h-[80vh] mx-auto my-4 sm:my-6 md:my-7 border rounded-lg border-gray-200 dark:border-gray-600 flex flex-col px-3 sm:px-4">
       {/* Header */}
-      <div className="bg-gray-800 flex flex-col sm:flex-row items-center sm:items-center sm:justify-start justify-center text-white rounded-t-sm border-b border-gray-600 px-4 py-3 gap-3 sm:gap-4">
+      <div className="bg-white dark:bg-gray-800 flex flex-col sm:flex-row items-center sm:items-center sm:justify-start justify-center text-gray-800 dark:text-white rounded-t-lg border-b border-gray-200 dark:border-gray-600 px-2 sm:px-4 py-3 gap-3 sm:gap-4">
         {/* Avatar */}
         <div className="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 rounded-full overflow-hidden flex-shrink-0 bg-gray-700 flex items-center justify-center">
           {targetUser?.photoURL ? (
@@ -204,7 +204,7 @@ const Chat = () => {
 </div>
       </div>
 
-      <div className="flex-1 overflow-y-scroll">
+      <div className="flex-1 overflow-y-auto">
         {/* display messages */}
         {messages.map((msg, index) => {
           const isLatest = index === messages.length - 1;
@@ -229,9 +229,9 @@ const Chat = () => {
           );
         })}
       </div>
-      <div className="w-full p-5 border-t justify-center items-center gap-3 border-gray-600 flex ">
+      <div className="w-full p-3 sm:p-4 border-t justify-center items-center gap-3 border-gray-200 dark:border-gray-600 flex">
         <input
-          className="input w-full border border-gray-600"
+          className="input w-full border border-gray-300 dark:border-gray-600"
           value={newMessage}
           onChange={(e) => {
             const socket = createSocketConnection();
@@ -243,7 +243,7 @@ const Chat = () => {
             }
           }}
         />
-        <button onClick={sendMessage} className="btn bg-primary p-5">
+        <button onClick={sendMessage} className="btn bg-primary px-5 py-2">
           Send
         </button>
       </div>

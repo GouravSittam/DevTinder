@@ -20,7 +20,7 @@ const UserCard = ({ user }) => {
   return (
     <div className="w-full max-w-md mx-auto transform transition-all duration-300 hover:scale-[1.01] hover:shadow-lg">
       <div className="card bg-base-100 dark:bg-gray-800 shadow-md rounded-xl overflow-hidden border border-gray-100 dark:border-gray-700 transition-colors duration-200">
-        <figure className="relative h-80">
+        <figure className="relative h-64 sm:h-72 md:h-80">
           {photoURL ? (
             <img
               src={photoURL || "/placeholder.svg"}
