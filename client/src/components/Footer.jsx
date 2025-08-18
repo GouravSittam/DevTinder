@@ -22,7 +22,7 @@ const Footer = () => {
 
           <div className="flex space-x-4">
             <Link
-              to="https://github.com/Abhinandan-Sah"
+              to="https://github.com/GouravSittam"
               className="text-gray-500 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors duration-200"
               aria-label="GitHub"
               target="_blank"
@@ -31,7 +31,7 @@ const Footer = () => {
               <Github className="h-5 w-5" />
             </Link>
             <Link
-              to="https://x.com/I_AbhinandanSah"
+              to="https://x.com/Gouravv_c"
               className="text-gray-500 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors duration-200"
               aria-label="Twitter"
               target="_blank"
@@ -40,7 +40,7 @@ const Footer = () => {
               <Twitter className="h-5 w-5" />
             </Link>
             <Link
-              to="https://www.linkedin.com/in/abhinandan-sah/"
+              to="https://www.linkedin.com/in/gouravsittam/"
               className="text-gray-500 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors duration-200"
               aria-label="LinkedIn"
               target="_blank"
