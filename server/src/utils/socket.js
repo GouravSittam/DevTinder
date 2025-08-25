@@ -1,6 +1,7 @@
 const socket = require("socket.io");
 const crypto = require("crypto");
 const { Chat } = require("../models/chat");
+const userModel = require("../models/user");
 
 const getSecretRoomId = ({ userId, targetUserId }) => {
   return crypto
@@ -11,7 +12,7 @@ const getSecretRoomId = ({ userId, targetUserId }) => {
 
 const onlineUsers = new Map();
 
-const initilizeSocket = (server) => {
+const initilizeSocket = async (server) => {
   const io = socket(server, {
     cors: {
       origin: "http://localhost:5173",
@@ -22,6 +23,49 @@ const initilizeSocket = (server) => {
     socket.on("userOnline", ({ userId }) => {
       onlineUsers.set(userId, socket.id);
       io.emit("updateUserStatus", Array.from(onlineUsers.keys()));
+    });
+
+    // 🔹 Emit an event to send the socket ID to the connected user
+    socket.emit("me", socket.id);
+
+    // Listen for call events
+    socket.on("callToUser", async ({ callToUserId, signalData, from, name, email, profilepic }) => {
+        const calle = onlineUsers.get(callToUserId);
+        
+
+        // User is offline
+        if (!calle) {
+            socket.emit("userUnavailable", {
+              message: `User is offline`,
+            });
+        }
+
+        // User is online (eg: caller is avi and this is call is forwarding to sam)
+        const targetUserSocketId = onlineUsers.get(callToUserId);
+        if (targetUserSocketId) {
+          // Emit the incoming call event to the target(Receiver) user
+          io.to(targetUserSocketId).emit("incomingCall", {
+            signalData,
+            from,
+            name,
+            email,
+            profilepic,
+          });
+        }
+      }
+    );
+
+    socket.on("answeredCall", ({ signalData, from, to }) => {
+        io.to(to).emit("callAccepted", { signalData, from });
+    });
+
+    socket.on("rejectCall", ({ to, name, profilepic }) => {
+      io.to(to).emit("callRejected", { name, profilepic });
+    });
+
+    socket.on("endCall", ({ to }) => {
+      console.log("Ending call with:", to);
+      io.to(to).emit("callEnded");
     });
 
     // Listen for user offline event (on disconnect)

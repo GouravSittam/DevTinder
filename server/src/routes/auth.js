@@ -9,6 +9,54 @@ const userModel = require("../models/user");
 const redisClient = require("../config/redis.js");
 const jwt = require("jsonwebtoken");
 const { userAuth } = require("../middlewares/auth.js");
+const { OAuth2Client } = require("google-auth-library");
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+authRouter.get("/config/google-client-id", (req, res) => {
+  res.json({ clientId: process.env.GOOGLE_CLIENT_ID });
+});
+
+authRouter.post("/auth/google", async (req, res) => {
+  try {
+    const { idToken } = req.body;
+    if (!idToken) throw new Error("No Google idToken provided");
+
+    const ticket = await client.verifyIdToken({
+      idToken,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+
+    // Try to find user by email
+    let user = await userModel.findOne({ emailId: payload.email });
+
+    if (!user) {
+      // If user doesn't exist, create a new one
+      user = new userModel({
+        firstName: payload.given_name,
+        lastName: payload.family_name,
+        emailId: payload.email,
+        password: await bcrypt.hash(payload.sub, 10), // Use Google sub as password hash
+        photoURL: payload.picture,
+        skills: [],
+        about: "",
+      });
+      await user.save();
+    }
+
+    // Issue JWT and set cookie
+    res.clearCookie("token");
+    const token = await user.getJWT();
+    res.cookie("token", token, {
+      expires: new Date(Date.now() + 3600000),
+    });
+
+    res.json({ message: "Login/Signup Successful!", data: user });
+  } catch (err) {
+    res.status(400).send("Error with Google auth: " + err.message);
+  }
+});
 
 authRouter.post("/signup", async (req, res) => {
   try {

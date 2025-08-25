@@ -15,6 +15,9 @@ const Feed = () => {
   const dispatch = useDispatch();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [page, setPage] = useState(1);           // Tracks current page number
+const [hasMore, setHasMore] = useState(true);  // Tracks if more users are available
+const PAGE_LIMIT = 20;                         // Number of users per page
 
   useEffect(() => {
       getFeed()

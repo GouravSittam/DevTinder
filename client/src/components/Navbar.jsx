@@ -30,7 +30,6 @@ const Navbar = () => {
   const [newRequestsCount, setNewRequestsCount] = useState(0); // Track new requests count
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State to control dropdown visibility
 
-
   // Fetch requests periodically
   useEffect(() => {
     const fetchRequests = async () => {
@@ -83,7 +82,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <Link to="/feed" className="flex items-center gap-2">
+            <Link to="/" className="flex items-center gap-2">
               <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white p-1.5 rounded">
                 <Code className="h-5 w-5" />
               </div>
@@ -179,7 +178,7 @@ const Navbar = () => {
 
                 <div className="flex items-center ml-4 space-x-2">
                   {/* Theme toggle button */}
-                  <button
+                  {/* <button
                     onClick={toggleTheme}
                     className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                     aria-label={
@@ -193,7 +192,7 @@ const Navbar = () => {
                     ) : (
                       <Moon className="h-5 w-5" />
                     )}
-                  </button>
+                  </button> */}
 
                   <span className="text-sm text-gray-600 dark:text-gray-400">
                     Hi, {user?.firstName}
@@ -231,49 +230,50 @@ const Navbar = () => {
 
                   </div> */}
 
-<div className="relative">
-  <details className="dropdown">
-    <summary className="flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 list-none cursor-pointer">
-      <div className="h-8 w-8 rounded-full overflow-hidden border-2 border-gray-200 dark:border-gray-700">
-        {user.photoURL ? (
-          <img
-            src={user.photoURL || "/placeholder.svg"}
-            alt={`${user.firstName} ${user.lastName}`}
-            className="h-full w-full object-cover"
-          />
-        ) : (
-          <div className="h-full w-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center">
-            <span className="text-white text-xs font-bold">
-              {user.firstName?.charAt(0)}
-              {user.lastName?.charAt(0)}
-            </span>
-          </div>
-        )}
-      </div>
-    </summary>
+                  <div className="relative">
+                    <details className="dropdown">
+                      <summary className="flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 list-none cursor-pointer">
+                        <div className="h-8 w-8 rounded-full overflow-hidden border-2 border-gray-200 dark:border-gray-700">
+                          {user.photoURL ? (
+                            <img
+                              src={user.photoURL || "/placeholder.svg"}
+                              alt={`${user.firstName} ${user.lastName}`}
+                              className="h-full w-full object-cover"
+                              referrerPolicy="no-referrer"
+                            />
+                          ) : (
+                            <div className="h-full w-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center">
+                              <span className="text-white text-xs font-bold">
+                                {user.firstName?.charAt(0)}
+                                {user.lastName?.charAt(0)}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </summary>
 
-    <ul
-      tabIndex={0}
-      className="menu menu-sm absolute right-0 mt-3 w-52 p-2 shadow bg-base-100 rounded-box z-50"
-    >
-      <li>
-        <button onClick={handleLogout} className="text-left w-full">
-          Logout
-        </button>
-      </li>
-    </ul>
-  </details>
-</div>
-
-
-                  
+                      <ul
+                        tabIndex={0}
+                        className="menu menu-sm absolute right-0 mt-3 w-52 p-2 shadow bg-base-100 rounded-box z-50"
+                      >
+                        <li>
+                          <button
+                            onClick={handleLogout}
+                            className="text-left w-full"
+                          >
+                            Logout
+                          </button>
+                        </li>
+                      </ul>
+                    </details>
+                  </div>
                 </div>
               </div>
 
               {/* Mobile menu button */}
               <div className="flex md:hidden items-center space-x-2">
                 {/* Theme toggle button */}
-                <button
+                {/* <button
                   onClick={toggleTheme}
                   className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                   aria-label={
@@ -287,7 +287,7 @@ const Navbar = () => {
                   ) : (
                     <Moon className="h-5 w-5" />
                   )}
-                </button>
+                </button> */}
 
                 <button
                   onClick={toggleMenu}
@@ -317,6 +317,7 @@ const Navbar = () => {
                     src={user.photoURL || "/placeholder.svg"}
                     alt={`${user.firstName} ${user.lastName}`}
                     className="h-full w-full object-cover"
+                    referrerPolicy="no-referrer"
                   />
                 ) : (
                   <div className="h-full w-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center">

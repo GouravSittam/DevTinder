@@ -102,6 +102,7 @@ const Connections = () => {
                       src={photoURL || "/placeholder.svg"}
                       alt={`${firstName} ${lastName}`}
                       className="h-full w-full object-cover"
+                      referrerPolicy="no-referrer"
                     />
                   ) : (
                     <div className="h-full w-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center">

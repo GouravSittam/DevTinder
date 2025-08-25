@@ -11,7 +11,7 @@
     "nodejs",
     "javascript"
   ],
-  "author": "Gourav Chaudhary",
+  "author": "Abhinandan Sah",
   "license": "ISC",
   "dependencies": {
     "@aws-sdk/client-ses": "^3.782.0",
@@ -22,6 +22,7 @@
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.7",
     "express": "^4.21.1",
+    "google-auth-library": "^10.2.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.8.3",
     "multer": "^2.0.2",
