@@ -169,7 +169,7 @@ Please follow the [Conventional Commits](https://www.conventionalcommits.org/) s
 
 ## 📞 Contact
 
-For questions, suggestions, or support, open an issue or contact [Gourav Chaudhary](https://github.com/GouravSittam).
+For questions, suggestions, or support, open an issue or contact [Gourav Chaudhary](https://x.com/Gouravv_c) · [LinkedIn](https://www.linkedin.com/in/gouravsittam/) · [GitHub](https://github.com/GouravSittam).
 
 ---
 
