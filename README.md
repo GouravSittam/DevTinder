@@ -1,78 +1,79 @@
-# 🚀 DevConnect - Developer Matchmaking Platform
+# 🚀 DevTinder – Advanced Developer Matchmaking Platform
 
-DevConnect is a Tinder-inspired matchmaking platform exclusively for developers to connect, collaborate, and network based on their skills and interests.
+<p align="center">
+	<img src="client/public/DevConnectLogo.png" alt="DevTinder Logo" width="120" />
+</p>
 
-🔗 **Live Demo:** www.devconnects.tech 
-📂 **GitHub Repository:** [https://github.com/Abhinandan-Sah/DevConnect](https://github.com/Abhinandan-Sah/DevConnect)
+<p align="center">
+	<a href="https://github.com/GouravSittam/DevTinder"><img src="https://img.shields.io/github/stars/GouravSittam/DevTinder?style=flat-square" alt="GitHub stars"></a>
+	<a href="https://github.com/GouravSittam/DevTinder"><img src="https://img.shields.io/github/forks/GouravSittam/DevTinder?style=flat-square" alt="GitHub forks"></a>
+	<a href="https://github.com/GouravSittam/DevTinder/blob/main/LICENSE"><img src="https://img.shields.io/github/license/GouravSittam/DevTinder?style=flat-square" alt="License"></a>
+	<img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome">
+</p>
+
+---
+
+## About DevTinder
+
+**DevTinder** is a next-generation matchmaking and networking platform for developers, inspired by Tinder but tailored for tech professionals. Connect, collaborate, and build your network based on skills, interests, and real-time interactions.
 
 ---
 
 ## ✨ Features
 
-- 🔐 **Secure Authentication:** JWT-based authentication for safe and persistent sessions.
-- 🎯 **Personalized Matchmaking:** Connect with developers based on skills, interests, and preferences.
-- 💬 **Real-time Messaging:** Chat instantly with your matches.
-- 📄 **Detailed Profiles:** Showcase your skills, interests, and experience.
-- 🔄 **Swipe & Match:** Swipe to like or pass on other developers.
-- 📨 **Connection Requests:** Send and manage connection requests.
-- 🗂️ **Connections Management:** View and manage your developer connections.
-- ⚙️ **Full Stack MERN Application:** Built with modern technologies for scalability and performance.
-- 🌗 **Dark Mode:** Seamless light/dark theme support.
+- 🔐 **Secure JWT Authentication**
+- 🎯 **AI-Powered Matchmaking** based on skills, interests, and preferences
+- 💬 **Real-time Chat & Notifications** (Socket.io)
+- 📄 **Rich Developer Profiles** with skills, experience, and social links
+- 🔄 **Swipe to Connect** – Like, Pass, and Match
+- 📨 **Connection Requests & Management**
+- 🗂️ **Organized Connections Dashboard**
+- 🌗 **Dark/Light Theme Toggle**
+- ⚡ **Performance Optimized** (MERN stack, Dockerized)
+- 🚀 **Production Ready** (Nginx, Redis, CI/CD, Docker Compose)
 
 ---
 
 ## 🛠️ Tech Stack
 
 **Frontend:**
-- ReactJS (with Hooks)
-- Redux Toolkit (state management)
-- Tailwind CSS (utility-first styling)
-- React Router DOM (routing)
-- Axios (API requests)
+
+- React.js (Hooks, Context, Redux Toolkit)
+- Tailwind CSS
+- Vite
+- React Router DOM
+- Axios
 
 **Backend:**
-- Node.js
-- Express.js
-- MongoDB (Mongoose ODM)
-- JWT Authentication
-- Redis (for session/token management)
-- Socket.io (real-time chat)
-- Nginx (reverse proxy, production)
-- CORS & Security Middlewares
+
+- Node.js, Express.js
+- MongoDB (Mongoose)
+- JWT Auth
+- Redis (Session/Token)
+- Socket.io
+- Nginx (Reverse Proxy)
+- Docker & Docker Compose
+
+**DevOps:**
+
+- Jenkins (CI/CD)
+- Docker Compose
+- Nginx
 
 ---
 
-## 🚧 Installation & Setup
+## � Quick Start
 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Abhinandan-Sah/DevConnect.git
-cd DevConnect
+git clone https://github.com/GouravSittam/DevTinder.git
+cd DevTinder
 ```
 
-### 2. Setup the Client
+### 2. Environment Variables
 
-```bash
-cd client
-npm install
-npm run dev
-```
-The client will run on [http://localhost:5173](http://localhost:5173) by default.
-
-### 3. Setup the Server
-
-```bash
-cd ..
-cd server
-npm install
-npm run dev
-```
-The server will run on [http://localhost:5000](http://localhost:5000) by default.
-
-### 4. Environment Variables
-
-Create a `.env` file in the `server` directory with the following variables:
+Create a `.env` file in the `server` directory:
 
 ```env
 MONGO_URI=your_mongodb_connection_string
@@ -82,30 +83,60 @@ REDIS_URL=redis://localhost:6379
 SERVER_ENV=development
 ```
 
+### 3. Start with Docker Compose (Recommended)
+
+```bash
+docker-compose up --build
+```
+
+Frontend: [http://localhost:5173](http://localhost:5173)  
+Backend: [http://localhost:5000](http://localhost:5000)
+
+### 4. Manual Setup (Dev Mode)
+
+#### Client
+
+```bash
+cd client
+pnpm install # or npm install
+pnpm run dev # or npm run dev
+```
+
+#### Server
+
+```bash
+cd server
+pnpm install # or npm install
+pnpm run dev # or npm run dev
+```
+
 ---
 
 ## 🌐 Deployment
 
-- **Frontend:** Can be deployed on Vercel, Netlify, or Azure Static Web Apps.
-- **Backend:** Can be deployed on Azure VM, Render, or any VPS with Node.js support.
-- **Reverse Proxy:** Use Nginx to serve the backend over HTTPS and handle SSL termination.
-- **Environment:** Update CORS and API URLs for production in `client/src/utils/constants.js` and `server/src/app.js`.
+- **Frontend:** Vercel, Netlify, Azure Static Web Apps
+- **Backend:** Azure VM, Render, VPS, or Docker
+- **Reverse Proxy:** Nginx (SSL, HTTPS)
+- **CI/CD:** Jenkins pipeline (see `Jenkinsfile`)
+- **Production Config:** Update CORS and API URLs in `client/src/utils/constants.js` and `server/src/app.js`
 
 ---
 
-## 📦 Folder Structure
+## � Project Structure
 
-```
-DevConnect/
+```text
+DevTinder/
 │
-├── client/         # React frontend
+├── client/      # React frontend
 │   ├── src/
 │   └── ...
 │
-├── server/         # Node.js backend
+├── server/      # Node.js backend
 │   ├── src/
 │   └── ...
 │
+├── docker-compose.yml
+├── Jenkinsfile
 ├── README.md
 └── ...
 ```
@@ -114,29 +145,34 @@ DevConnect/
 
 ## 🧑‍💻 Contributing
 
+We welcome contributions! To get started:
+
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/YourFeature`)
 3. Commit your changes (`git commit -m 'Add some feature'`)
-4. Push to the branch (`git push origin feature/YourFeature`)
+4. Push to your branch (`git push origin feature/YourFeature`)
 5. Open a Pull Request
+
+Please follow the [Conventional Commits](https://www.conventionalcommits.org/) style and ensure your code passes linting and tests.
 
 ---
 
 ## 🛡️ Security & Best Practices
 
-- Use HTTPS in production for both frontend and backend.
-- Set secure cookie options (`httpOnly`, `secure`, `sameSite`).
-- Restrict CORS origins in productions.
-- Store secrets and credentials in environment variables.
+- Use HTTPS in production for both frontend and backend
+- Set secure cookie options (`httpOnly`, `secure`, `sameSite`)
+- Restrict CORS origins in production
+- Store secrets and credentials in environment variables
+- Regularly update dependencies
 
 ---
 
 ## 📞 Contact
 
-For questions, suggestions, or support, open an issue or contact [Abhinandan Sah](https://github.com/Abhinandan-Sah).
+For questions, suggestions, or support, open an issue or contact [Gourav Chaudhary](https://github.com/GouravSittam).
 
 ---
 
-## 📃 License By 
+## 📃 License
 
-This project is licensed by Abhinandan Sah
+This project is licensed under the MIT License by Gourav Chaudhary.
