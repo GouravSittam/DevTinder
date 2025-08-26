@@ -23,27 +23,6 @@ const rateLimiter = require("./middlewares/rateLimiter.js");
 
 const port = process.env.SERVER_PORT;
 
-// app.use(
-//   cors({
-//     origin: ["http://localhost:5173","http://20.40.54.228"],
-//     credentials: true,
-//   })
-// );
-
-
-// app.use(
-//   cors({
-//     origin: [
-//       "http://devconnects.tech",
-//       "www.devconnects.tech",
-//       "http://20.40.54.228:5173",
-//       "http://20.40.54.228",
-//       "http://localhost:5173" // optional for local testing
-//     ],
-//     credentials: true,
-//   })
-// );
-
 app.use(cors({
     origin: process.env.SERVER_ENV === 'production'
       ? [
@@ -77,26 +56,11 @@ app.get("/", async (req, res) => {
 });
 
 
-
-// connectDB()
-//   .then(() => {
-//     console.log("Database connected successfully");
-//   })
-//   .catch((err) => {
-//     console.log("Database cannot be connected");
-//   });
-
 const server = http.createServer(app);
 initilizeSocket(server);
 
 const initilizeConnection = async() => {
   try{
-    // await redisClient.connect();
-    // console.log("Connected with redis")
-
-    // await connectDB();
-    // console.log("Database connected successfully");
-
     await Promise.all([redisClient.connect(), connectDB()]);
     console.log("Database connected successfully along with redis")
 
@@ -110,8 +74,5 @@ const initilizeConnection = async() => {
   }
 }
 
-  initilizeConnection();
+initilizeConnection();
 
-// server.listen(port, (req, res) => {
-//   console.log("Server is running at port " + port);
-// });

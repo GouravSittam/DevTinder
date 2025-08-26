@@ -2,19 +2,35 @@ import axios from "axios"
 import { BASE_URL } from "../utils/constants"
 import { useDispatch } from "react-redux"
 import { removeUserFromFeed } from "../utils/feedSlice"
-import { Heart, X, User, Code2 } from "lucide-react"
+import { Heart, X, User, Code2, Loader2 } from "lucide-react"
+import { useState } from "react"
 
 const UserCard = ({ user }) => {
   const { _id, firstName, lastName, age, gender, photoURL, about } = user
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSendRequest = async (status, userId) => {
     try {
+      setIsLoading(true);
       const res = await axios.post(BASE_URL + "/request/send/" + status + "/" + userId, {}, { withCredentials: true })
       dispatch(removeUserFromFeed(userId))
     } catch (err) {
       console.log(err)
+    } finally {
+      setIsLoading(false);
     }
+  }
+
+    if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[calc(100vh-10rem)] w-full">
+        <Loader2 className="h-12 w-12 text-purple-600 dark:text-purple-400 animate-spin mb-4 transition-colors duration-200" />
+        <h2 className="text-xl font-medium text-gray-700 dark:text-gray-300 transition-colors duration-200">
+          Loading ...
+        </h2>
+      </div>
+    );
   }
 
   return (

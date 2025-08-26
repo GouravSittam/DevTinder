@@ -64,7 +64,6 @@ const initilizeSocket = async (server) => {
     });
 
     socket.on("endCall", ({ to }) => {
-      console.log("Ending call with:", to);
       io.to(to).emit("callEnded");
     });
 

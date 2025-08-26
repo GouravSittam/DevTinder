@@ -30,7 +30,7 @@ const Chat = () => {
   const userId = user?._id;
   const targetUser = connections?.find((conn) => conn._id === targetUserId);
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const onlineUsers = useSelector((state) => state.onlineUsers);
   const lastMessageRef = useRef(null);

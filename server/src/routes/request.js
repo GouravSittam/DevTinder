@@ -48,9 +48,6 @@ requestRouter.post(
         emailBody
       );
 
-      console.log("Email sent successfully:", emailRes);
-
-
         res.json({ message: "Connection Request Sent Successfully!", data });
       } catch (err) {
         res.status(400).send("ERROR: " + err.message);
