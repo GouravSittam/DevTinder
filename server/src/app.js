@@ -23,26 +23,29 @@ const rateLimiter = require("./middlewares/rateLimiter.js");
 
 const port = process.env.SERVER_PORT;
 
-app.use(cors({
-    origin: process.env.SERVER_ENV === 'production'
-      ? [
-          'http://devconnects.tech',
-          'https://devconnects.tech',
-          'http://www.devconnects.tech',
-          'https://www.devconnects.tech',
-          'http://20.244.50.103:5173',
-          'http://20.244.50.103'
-        ]
-      : 'http://localhost:5173',
+app.use(
+  cors({
+    origin:
+      process.env.SERVER_ENV === "production"
+        ? [
+            "http://devconnects.tech",
+            "https://devconnects.tech",
+            "http://www.devconnects.tech",
+            "https://www.devconnects.tech",
+            "http://20.244.50.103:5173",
+            "http://20.244.50.103",
+          ]
+        : "http://localhost:5173",
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-    exposedHeaders: ['Set-Cookie']
-}));
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+    exposedHeaders: ["Set-Cookie"],
+  })
+);
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(rateLimiter)
+app.use(rateLimiter);
 
 app.use("/", authRouter);
 app.use("/", profileRouter);
@@ -50,29 +53,24 @@ app.use("/", requestRouter);
 app.use("/", userRouter);
 app.use("/", chatRouter);
 
-
 app.get("/", async (req, res) => {
   res.send("hello from server");
 });
 
-
 const server = http.createServer(app);
 initilizeSocket(server);
 
-const initilizeConnection = async() => {
-  try{
+const initilizeConnection = async () => {
+  try {
     await Promise.all([redisClient.connect(), connectDB()]);
-    console.log("Database connected successfully along with redis")
+    console.log("Database connected successfully along with redis");
 
     server.listen(port, (req, res) => {
       console.log("Server is running at port " + port);
     });
-
+  } catch (err) {
+    console.log("Error: " + err);
   }
-  catch(err){
-    console.log("Error: "+ err);
-  }
-}
+};
 
 initilizeConnection();
-
