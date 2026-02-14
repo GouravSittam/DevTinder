@@ -2,9 +2,6 @@
    DEVCONNECTS DESIGN SYSTEM
    ========================================== */
 
-/* Fonts */
-@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Liberation+Mono:wght@400;700&family=Liberation+Serif:wght@400&family=Space+Grotesk:wght@700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap");
-
 :root {
   /* Primary Colors */
   --color-primary-dark: #0f0518;
@@ -449,6 +446,37 @@ body {
 .login-form-container {
   width: 384px;
   max-width: 384px;
+}
+
+.login-form-card {
+  background: rgba(15, 14, 19, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-2xl);
+  padding: 40px;
+  backdrop-filter: blur(20px);
+}
+
+.login-input {
+  width: 100%;
+  padding: 14px 16px;
+  background: rgba(24, 24, 27, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-xl);
+  color: var(--color-white);
+  font-size: 14px;
+  font-family: var(--font-primary);
+  transition: all 0.2s;
+}
+
+.login-input:focus {
+  outline: none;
+  border-color: var(--color-purple-primary);
+  background: rgba(24, 24, 27, 0.8);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+.login-input::placeholder {
+  color: var(--color-text-muted);
 }
 
 .input-field {

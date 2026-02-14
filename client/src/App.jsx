@@ -1,5 +1,11 @@
 import { createContext, useEffect, useRef, useState } from "react";
-import { useLocation, BrowserRouter, Route, Routes } from "react-router-dom";
+import {
+  useLocation,
+  BrowserRouter,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import appStore from "./utils/appStore";
 import Body from "./components/Body";
@@ -17,7 +23,6 @@ import { BASE_URL } from "./utils/constants";
 import IncomingCallNotification from "./components/IncomingCallNotification";
 // import socketProvider from "./components/socketProvider";
 import SocketContext from "./utils/SocketContext";
-
 
 function GoogleAnalytics() {
   const location = useLocation();
@@ -44,12 +49,16 @@ function App() {
   const [callerSignal, setCallerSignal] = useState(null);
   const [callAccepted, setCallAccepted] = useState(false);
 
-
-
   useEffect(() => {
     const fetchGoogleClientId = async () => {
-      const response = await axios.get(BASE_URL + "/config/google-client-id");
-      setGoogleClientId(response.data.clientId);
+      try {
+        const response = await axios.get(BASE_URL + "/config/google-client-id");
+        setGoogleClientId(response.data.clientId);
+      } catch (error) {
+        console.error("Failed to fetch Google Client ID:", error);
+        // Set a default or empty string to allow app to render
+        setGoogleClientId("default");
+      }
     };
     fetchGoogleClientId();
     if (!userId) {
@@ -57,7 +66,6 @@ function App() {
     }
     const s = createSocketConnection();
     setSocket(s);
-
 
     // Notify server this user is online
     s.emit("userOnline", { userId });
@@ -68,14 +76,11 @@ function App() {
     });
 
     // Receiving a call from another user who is calling
-    s.on(
-      "incomingCall",
-      ({ signalData, from, name, email, profilepic }) => {
-        setRecievingCall(true);
-        setCallerDetails({ from, name, email, profilepic });
-        setCallerSignal(signalData);
-      }
-    );
+    s.on("incomingCall", ({ signalData, from, name, email, profilepic }) => {
+      setRecievingCall(true);
+      setCallerDetails({ from, name, email, profilepic });
+      setCallerSignal(signalData);
+    });
 
     // Emit offline on tab close/refresh
     const handleOffline = () => {
@@ -89,44 +94,52 @@ function App() {
       s.emit("userOffline", { userId }); // Tell server you're offline
       s.disconnect();
     };
-  
   }, [userId]);
 
-  return (
-     <>
-      {googleClientId && ( // Only wait for the client ID
-        <GoogleOAuthProvider clientId={googleClientId}>
-          <SocketContext.Provider value={socket}>
-            <BrowserRouter basename="/">
-              <GoogleAnalytics />
-              <Routes>
-                <Route path="/" element={<Body />}>
-                  <Route path="/" element={<Feed />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/profile" element={<Profile />} />
-                  <Route path="/connections" element={<Connections />} />
-                  <Route path="/requests" element={<Requests />} />
-                  <Route path="/chat/:targetUserId" element={<Chat />} />
-                </Route>
-              </Routes>
+  // Show loading while fetching Google Client ID
+  if (!googleClientId) {
+    return (
+      <div className="min-h-screen bg-[#0F0518] flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mb-4"></div>
+          <p className="text-gray-400">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
-              {/* This notification can stay here, it depends on its own state */}
-              {recievingCall  && (
-                <IncomingCallNotification
-                  callerDetails={callerDetails}
-                  setCallAccepted={setCallAccepted}
-                  setRecievingCall={setRecievingCall}
-                  setCallerDetails={setCallerDetails}
-                  socket={socket}
-                  callerSignal={callerSignal}
-                  callAccepted={callAccepted}
-                />
-              )}
-            </BrowserRouter>
-          </SocketContext.Provider>
-        </GoogleOAuthProvider>
-      )}
-    </>
+  return (
+    <GoogleOAuthProvider clientId={googleClientId}>
+      <SocketContext.Provider value={socket}>
+        <BrowserRouter basename="/">
+          <GoogleAnalytics />
+          <Routes>
+            <Route path="/" element={<Navigate to="/login" replace />} />
+            <Route path="/login" element={<Login />} />
+            <Route element={<Body />}>
+              <Route path="/feed" element={<Feed />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/connections" element={<Connections />} />
+              <Route path="/requests" element={<Requests />} />
+              <Route path="/chat/:targetUserId" element={<Chat />} />
+            </Route>
+          </Routes>
+
+          {/* This notification can stay here, it depends on its own state */}
+          {recievingCall && (
+            <IncomingCallNotification
+              callerDetails={callerDetails}
+              setCallAccepted={setCallAccepted}
+              setRecievingCall={setRecievingCall}
+              setCallerDetails={setCallerDetails}
+              socket={socket}
+              callerSignal={callerSignal}
+              callAccepted={callAccepted}
+            />
+          )}
+        </BrowserRouter>
+      </SocketContext.Provider>
+    </GoogleOAuthProvider>
   );
 }
 

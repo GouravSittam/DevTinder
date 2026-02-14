@@ -82,7 +82,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
+          <Link to="/feed" className="flex items-center gap-3 group">
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-xl blur-lg opacity-40 group-hover:opacity-60 transition-opacity"></div>
               <div className="relative bg-gradient-to-br from-purple-500 to-indigo-600 text-white p-2.5 rounded-xl shadow-lg">
@@ -106,8 +106,8 @@ const Navbar = () => {
                 {/* Navigation Links */}
                 <div className="flex items-center gap-2">
                   <Link
-                    to="/"
-                    className={`nav-link ${isActive("/") ? "nav-link-active" : ""}`}
+                    to="/feed"
+                    className={`nav-link ${isActive("/feed") ? "nav-link-active" : ""}`}
                   >
                     <Home className="h-4 w-4" />
                     <span>Feed</span>
@@ -248,9 +248,9 @@ const Navbar = () => {
           {/* Navigation Links */}
           <div className="p-4 space-y-2">
             <Link
-              to="/"
+              to="/feed"
               onClick={closeMenu}
-              className={`nav-link ${isActive("/") ? "nav-link-active" : ""} w-full justify-start`}
+              className={`nav-link ${isActive("/feed") ? "nav-link-active" : ""} w-full justify-start`}
             >
               <Home className="h-5 w-5" />
               <span>Feed</span>

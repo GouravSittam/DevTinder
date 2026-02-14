@@ -95,7 +95,7 @@ const Login = () => {
         { withCredentials: true },
       );
       dispatch(addUser(response.data));
-      navigate("/");
+      navigate("/feed");
     } catch (err) {
       setError(err?.response?.data || "Invalid email or password");
     } finally {
@@ -230,7 +230,7 @@ const Login = () => {
                       ) {
                         navigate("/profile");
                       } else {
-                        navigate("/");
+                        navigate("/feed");
                       }
                     } else {
                       throw new Error(
