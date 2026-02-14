@@ -7,6 +7,8 @@
 //         ENV_FILE = credentials('envfile')
 //     }
 
+
+
 //     stages {
 //         stage('Checkout') {
 //             steps {
@@ -15,6 +17,7 @@
 //                     credentialsId: 'github-creds'
 //             }
 //         }
+
 
 //         stage('Setup Environment') {
 //             steps {
@@ -25,6 +28,7 @@
 //                 }
 //             }
 //         }
+
 
 //         stage('Build and Push Images') {
 //             steps {
