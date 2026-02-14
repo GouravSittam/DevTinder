@@ -78,190 +78,111 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm sticky top-0 z-50 transition-colors duration-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          <div className="flex items-center">
-            <Link to="/" className="flex items-center gap-2">
-              <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white p-1.5 rounded">
-                <Code className="h-5 w-5" />
+    <nav className="nav-container">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="flex justify-between items-center h-20">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-xl blur-lg opacity-40 group-hover:opacity-60 transition-opacity"></div>
+              <div className="relative bg-gradient-to-br from-purple-500 to-indigo-600 text-white p-2.5 rounded-xl shadow-lg">
+                <Code className="h-6 w-6" />
               </div>
-              <span className="font-bold text-xl bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
-                DevConnects
+            </div>
+            <div className="flex flex-col">
+              <span className="font-extrabold text-2xl tracking-tight bg-gradient-to-r from-purple-500 via-indigo-500 to-purple-600 bg-clip-text text-transparent">
+                DevTinder
               </span>
-            </Link>
-          </div>
+              <span className="text-[10px] font-medium text-gray-500 -mt-1 tracking-wider uppercase">
+                Connect • Build • Grow
+              </span>
+            </div>
+          </Link>
 
           {user && (
             <>
               {/* Desktop menu */}
-              <div className="hidden md:flex items-center space-x-4">
-                <div className="flex items-center space-x-1">
+              <div className="hidden md:flex items-center gap-8">
+                {/* Navigation Links */}
+                <div className="flex items-center gap-2">
                   <Link
                     to="/"
-                    className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                      isActive("/")
-                        ? "bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400"
-                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                    }`}
+                    className={`nav-link ${isActive("/") ? "nav-link-active" : ""}`}
                   >
-                    <div className="flex items-center gap-1.5">
-                      <Home className="h-4 w-4" />
-                      <span>Feed</span>
-                    </div>
-                  </Link>
-
-                  <Link
-                    to="/profile"
-                    className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                      isActive("/profile")
-                        ? "bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400"
-                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                    }`}
-                  >
-                    <div className="flex items-center gap-1.5">
-                      <User className="h-4 w-4" />
-                      <span>Profile</span>
-                    </div>
+                    <Home className="h-4 w-4" />
+                    <span>Feed</span>
                   </Link>
 
                   <Link
                     to="/connections"
-                    className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                      isActive("/connections")
-                        ? "bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400"
-                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                    }`}
+                    className={`nav-link ${isActive("/connections") ? "nav-link-active" : ""}`}
                   >
-                    <div className="flex items-center gap-1.5">
-                      <Users className="h-4 w-4" />
-                      <span>Connections</span>
-                    </div>
+                    <Users className="h-4 w-4" />
+                    <span>Connections</span>
                   </Link>
-
-                  {/* <Link
-                    to="/requests"
-                    className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                      isActive("/requests")
-                        ? "bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400"
-                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                    }`}
-                  >
-                    <div className="flex items-center gap-1.5">
-                      <Bell className="h-4 w-4" />
-                      <span>Requests</span>
-                    </div>
-                  </Link> */}
 
                   <Link
                     to="/requests"
-                    onClick={() => {
-                      setNewRequestsCount(0); // Clear the notification count when "Requests" is clicked
-                    }}
-                    className={`relative px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                      isActive("/requests")
-                        ? "bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400"
-                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                    }`}
+                    onClick={() => setNewRequestsCount(0)}
+                    className={`nav-link ${isActive("/requests") ? "nav-link-active" : ""}`}
                   >
-                    <div className="flex items-center gap-1.5">
-                      <Bell className="h-4 w-4" />
-                      <span>Requests</span>
-                      {newRequestsCount > 0 && (
-                        <span className="absolute top-0 right-0 h-5 w-5 bg-red-500 text-white text-xs flex items-center justify-center rounded-full">
-                          {newRequestsCount}
-                        </span>
-                      )}
-                    </div>
+                    <Bell className="h-4 w-4" />
+                    <span>Requests</span>
+                    {newRequestsCount > 0 && (
+                      <span className="absolute -top-1 -right-1 h-5 w-5 bg-gradient-to-br from-pink-500 to-red-500 text-white text-[10px] font-bold flex items-center justify-center rounded-full border-2 border-gray-900 shadow-lg animate-pulse">
+                        {newRequestsCount}
+                      </span>
+                    )}
+                  </Link>
+
+                  <Link
+                    to="/profile"
+                    className={`nav-link ${isActive("/profile") ? "nav-link-active" : ""}`}
+                  >
+                    <User className="h-4 w-4" />
+                    <span>Profile</span>
                   </Link>
                 </div>
 
-                <div className="flex items-center ml-4 space-x-2">
-                  {/* Theme toggle button */}
-                  {/* <button
-                    onClick={toggleTheme}
-                    className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                    aria-label={
-                      theme === "dark"
-                        ? "Switch to light mode"
-                        : "Switch to dark mode"
-                    }
-                  >
-                    {theme === "dark" ? (
-                      <Sun className="h-5 w-5" />
-                    ) : (
-                      <Moon className="h-5 w-5" />
-                    )}
-                  </button> */}
-
-                  <span className="text-sm text-gray-600 dark:text-gray-400">
-                    Hi, {user?.firstName}
+                {/* User Section */}
+                <div className="flex items-center gap-4 pl-6 border-l border-white/5">
+                  <span className="text-sm font-medium text-gray-400">
+                    {user?.firstName}
                   </span>
-                  {/* <div className="relative group">
-                    <button className="flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
-                      <div className="h-8 w-8 rounded-full overflow-hidden border-2 border-gray-200 dark:border-gray-700">
-                        {user.photoURL ? (
-                          <img
-                            src={user.photoURL || "/placeholder.svg"}
-                            alt={`${user.firstName} ${user.lastName}`}
-                            className="h-full w-full object-cover"
-                          />
-                        ) : (
-                          <div className="h-full w-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center">
-                            <span className="text-white text-xs font-bold">
-                              {user.firstName?.charAt(0)}
-                              {user.lastName?.charAt(0)}
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                    </button>
-                    <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 hidden group-hover:block transition-colors duration-200">
-                      <button
-                        onClick={handleLogout}
-                        className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2 transition-colors duration-200"
-                      >
-                        <LogOut className="h-4 w-4" />
-                        Sign out
-                      </button>
-                    </div>
-
-
-
-                  </div> */}
 
                   <div className="relative">
                     <details className="dropdown">
-                      <summary className="flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 list-none cursor-pointer">
-                        <div className="h-8 w-8 rounded-full overflow-hidden border-2 border-gray-200 dark:border-gray-700">
-                          {user.photoURL ? (
-                            <img
-                              src={user.photoURL || "/placeholder.svg"}
-                              alt={`${user.firstName} ${user.lastName}`}
-                              className="h-full w-full object-cover"
-                              referrerPolicy="no-referrer"
-                            />
-                          ) : (
-                            <div className="h-full w-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center">
-                              <span className="text-white text-xs font-bold">
-                                {user.firstName?.charAt(0)}
-                                {user.lastName?.charAt(0)}
-                              </span>
-                            </div>
-                          )}
+                      <summary className="flex items-center cursor-pointer list-none group">
+                        <div className="relative">
+                          <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full blur opacity-40 group-hover:opacity-60 transition-opacity"></div>
+                          <div className="relative h-10 w-10 rounded-full overflow-hidden border-2 border-white/10 shadow-lg">
+                            {user.photoURL ? (
+                              <img
+                                src={user.photoURL}
+                                alt={`${user.firstName} ${user.lastName}`}
+                                className="h-full w-full object-cover"
+                                referrerPolicy="no-referrer"
+                              />
+                            ) : (
+                              <div className="h-full w-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center">
+                                <span className="text-white text-sm font-bold">
+                                  {user.firstName?.charAt(0)}
+                                  {user.lastName?.charAt(0)}
+                                </span>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </summary>
 
-                      <ul
-                        tabIndex={0}
-                        className="menu menu-sm absolute right-0 mt-3 w-52 p-2 shadow bg-base-100 rounded-box z-50"
-                      >
+                      <ul className="menu absolute right-0 mt-3 w-52 p-2 bg-gray-900/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl z-50">
                         <li>
                           <button
                             onClick={handleLogout}
-                            className="text-left w-full"
+                            className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all"
                           >
-                            Logout
+                            <LogOut className="h-4 w-4" />
+                            <span>Sign out</span>
                           </button>
                         </li>
                       </ul>
