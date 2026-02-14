@@ -192,33 +192,16 @@ const Navbar = () => {
               </div>
 
               {/* Mobile menu button */}
-              <div className="flex md:hidden items-center space-x-2">
-                {/* Theme toggle button */}
-                {/* <button
-                  onClick={toggleTheme}
-                  className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                  aria-label={
-                    theme === "dark"
-                      ? "Switch to light mode"
-                      : "Switch to dark mode"
-                  }
-                >
-                  {theme === "dark" ? (
-                    <Sun className="h-5 w-5" />
-                  ) : (
-                    <Moon className="h-5 w-5" />
-                  )}
-                </button> */}
-
+              <div className="flex md:hidden items-center">
                 <button
                   onClick={toggleMenu}
-                  className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-500 transition-colors duration-200"
+                  className="p-2.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all"
                 >
                   <span className="sr-only">Open main menu</span>
                   {isMenuOpen ? (
-                    <X className="block h-6 w-6" />
+                    <X className="h-6 w-6" />
                   ) : (
-                    <Menu className="block h-6 w-6" />
+                    <Menu className="h-6 w-6" />
                   )}
                 </button>
               </div>
@@ -227,106 +210,96 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile menu, show/hide based on menu state */}
+      {/* Mobile menu */}
       {isMenuOpen && user && (
-        <div className="md:hidden">
-          <div className="absolute top-16 left-0 w-full min-h-screen px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gray-800 dark:bg-gray-800 shadow-lg rounded-b-lg z-40 transition-colors duration-200">
-            <div className="flex items-center px-3 py-2 mb-2 border-b border-gray-200 dark:border-gray-700">
-              <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
+        <div className="md:hidden absolute top-20 left-0 right-0 mx-4 mb-4 bg-gray-900/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden z-40 animate-fadeIn">
+          {/* User Profile Header */}
+          <div className="flex items-center gap-4 p-6 border-b border-white/5 bg-gradient-to-br from-purple-500/10 to-indigo-600/10">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full blur opacity-40"></div>
+              <div className="relative h-14 w-14 rounded-full overflow-hidden border-2 border-white/10 shadow-lg">
                 {user.photoURL ? (
                   <img
-                    src={user.photoURL || "/placeholder.svg"}
+                    src={user.photoURL}
                     alt={`${user.firstName} ${user.lastName}`}
                     className="h-full w-full object-cover"
                     referrerPolicy="no-referrer"
                   />
                 ) : (
                   <div className="h-full w-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center">
-                    <span className="text-white text-sm font-bold">
+                    <span className="text-white text-lg font-bold">
                       {user.firstName?.charAt(0)}
                       {user.lastName?.charAt(0)}
                     </span>
                   </div>
                 )}
               </div>
-              <div>
-                <div className="text-base font-medium text-gray-800 dark:text-white">
-                  {user.firstName} {user.lastName}
-                </div>
-                <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                  {user.emailId}
-                </div>
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="text-lg font-bold text-white truncate">
+                {user.firstName} {user.lastName}
+              </div>
+              <div className="text-sm text-gray-400 truncate">
+                {user.emailId}
               </div>
             </div>
+          </div>
 
+          {/* Navigation Links */}
+          <div className="p-4 space-y-2">
             <Link
               to="/"
               onClick={closeMenu}
-              className={`block px-3 py-2 rounded-md text-base font-medium ${
-                isActive("/")
-                  ? "bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400"
-                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-              } transition-colors duration-200`}
+              className={`nav-link ${isActive("/") ? "nav-link-active" : ""} w-full justify-start`}
             >
-              <div className="flex items-center gap-3">
-                <Home className="h-5 w-5" />
-                <span>Feed</span>
-              </div>
-            </Link>
-
-            <Link
-              to="/profile"
-              onClick={closeMenu}
-              className={`block px-3 py-2 rounded-md text-base font-medium ${
-                isActive("/profile")
-                  ? "bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400"
-                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-              } transition-colors duration-200`}
-            >
-              <div className="flex items-center gap-3">
-                <User className="h-5 w-5" />
-                <span>Profile</span>
-              </div>
+              <Home className="h-5 w-5" />
+              <span>Feed</span>
             </Link>
 
             <Link
               to="/connections"
               onClick={closeMenu}
-              className={`block px-3 py-2 rounded-md text-base font-medium ${
-                isActive("/connections")
-                  ? "bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400"
-                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-              } transition-colors duration-200`}
+              className={`nav-link ${isActive("/connections") ? "nav-link-active" : ""} w-full justify-start`}
             >
-              <div className="flex items-center gap-3">
-                <Users className="h-5 w-5" />
-                <span>Connections</span>
-              </div>
+              <Users className="h-5 w-5" />
+              <span>Connections</span>
             </Link>
 
             <Link
               to="/requests"
               onClick={() => {
-                setNewRequestsCount(0); // Clear notification count
-                closeMenu(); // Close menu on mobile
+                setNewRequestsCount(0);
+                closeMenu();
               }}
-              className="relative flex items-center gap-3 px-2.5 py-2 text-base font-medium transition-colors hover:bg-gray-700 rounded-md"
+              className={`nav-link ${isActive("/requests") ? "nav-link-active" : ""} w-full justify-start`}
             >
               <Bell className="h-5 w-5" />
               <span>Requests</span>
               {newRequestsCount > 0 && (
-                <span className="absolute right-3 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
+                <span className="ml-auto h-6 w-6 bg-gradient-to-br from-pink-500 to-red-500 text-white text-xs font-bold flex items-center justify-center rounded-full shadow-lg">
                   {newRequestsCount}
                 </span>
               )}
             </Link>
 
+            <Link
+              to="/profile"
+              onClick={closeMenu}
+              className={`nav-link ${isActive("/profile") ? "nav-link-active" : ""} w-full justify-start`}
+            >
+              <User className="h-5 w-5" />
+              <span>Profile</span>
+            </Link>
+          </div>
+
+          {/* Logout Button */}
+          <div className="p-4 border-t border-white/5">
             <button
               onClick={() => {
                 handleLogout();
                 closeMenu();
               }}
-              className="w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3 transition-colors duration-200"
+              className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-xl transition-all"
             >
               <LogOut className="h-5 w-5" />
               <span>Sign out</span>

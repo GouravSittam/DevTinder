@@ -33,7 +33,6 @@ const EditProfile = ({ user }) => {
   const [skillSearch, setSkillSearch] = useState("");
   const fileInputRef = useRef(null);
 
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -64,17 +63,16 @@ const EditProfile = ({ user }) => {
         formData.append("photo", selectedPhoto);
       }
 
-      const response = await axios.patch(
-        BASE_URL + "/profile/edit",
-        formData,
-        { withCredentials: true, headers: { "Content-Type": "multipart/form-data" } }
-      );
+      const response = await axios.patch(BASE_URL + "/profile/edit", formData, {
+        withCredentials: true,
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
       dispatch(addUser(response?.data?.data));
       // setPhotoURL(response?.data?.data?.photoURL || ""); // <-- update photoURL state here
       setSelectedPhoto(null);
       setShowToast(true);
-      if(fileInputRef.current){
+      if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
       const i = setTimeout(() => {
@@ -87,303 +85,333 @@ const EditProfile = ({ user }) => {
     }
   };
 
-    // Filter skills based on search
-  const filteredSkills = techSkillsOptions.filter(opt =>
-    opt.label.toLowerCase().includes(skillSearch.toLowerCase()) &&
-    !skills.includes(opt.value)
+  // Filter skills based on search
+  const filteredSkills = techSkillsOptions.filter(
+    (opt) =>
+      opt.label.toLowerCase().includes(skillSearch.toLowerCase()) &&
+      !skills.includes(opt.value),
   );
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
-        Edit Your Profile
-      </h1>
+    <div className="min-h-screen bg-[#0F0518] py-12 px-4">
+      {/* Header */}
+      <div className="max-w-6xl mx-auto mb-12">
+        <h1 className="text-4xl font-extrabold text-white text-center mb-3 tracking-tight">
+          Edit Your Profile
+        </h1>
+        <p className="text-center text-gray-400 text-sm">
+          Update your information to help other developers discover you
+        </p>
+      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Profile Preview */}
+      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Profile Preview Card */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden sticky top-24 transition-colors duration-200">
-            <div className="bg-gradient-to-r from-purple-600 to-indigo-600 h-32 relative">
-              <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2">
-                <div className="h-32 w-32 rounded-full border-4 border-white dark:border-gray-800 overflow-hidden bg-white dark:bg-gray-700 transition-colors duration-200">
+          <div className="profile-card sticky top-24">
+            {/* Banner with Gradient */}
+            <div className="relative h-32 bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 overflow-hidden">
+              <div className="absolute inset-0 opacity-20">
+                <div className="absolute top-0 left-0 w-40 h-40 bg-white rounded-full blur-3xl"></div>
+                <div className="absolute bottom-0 right-0 w-32 h-32 bg-pink-400 rounded-full blur-3xl"></div>
+              </div>
+            </div>
+
+            {/* Avatar */}
+            <div className="relative -mt-16 flex justify-center">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full blur-lg opacity-40"></div>
+                <div className="relative w-32 h-32 rounded-full border-4 border-gray-900 overflow-hidden bg-gradient-to-br from-purple-500 to-indigo-600 shadow-2xl">
                   {photoURL ? (
                     <img
-                      // ✅ Use the local photoURL state, which is now synced with Redux
                       src={`${photoURL}?${Date.now()}`}
                       alt="Profile"
-                      className="h-full w-full object-cover"
+                      className="w-full h-full object-cover"
                       referrerPolicy="no-referrer"
                     />
                   ) : (
-                    <div className="h-full w-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center">
-                      <span className="text-white text-2xl font-bold">
-                        {firstName?.charAt(0)}
-                        {lastName?.charAt(0)}
-                      </span>
+                    <div className="w-full h-full flex items-center justify-center text-white text-3xl font-bold">
+                      {firstName?.charAt(0)}
+                      {lastName?.charAt(0)}
                     </div>
-                  )} 
+                  )}
                 </div>
               </div>
             </div>
 
-            <div className="pt-20 p-6">
-              <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white transition-colors duration-200">
+            {/* User Info */}
+            <div className="px-6 pb-6">
+              <h2 className="text-2xl font-extrabold text-white text-center mt-4 mb-2 tracking-tight">
                 {firstName || "First"} {lastName || "Last"}
               </h2>
 
-              <div className="flex justify-center gap-3 mt-2 mb-4">
+              {/* Badges */}
+              <div className="flex justify-center gap-2 mb-6">
                 {age && (
-                  <span className="inline-flex items-center gap-1 text-sm font-medium bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full text-gray-700 dark:text-gray-300 transition-colors duration-200">
-                    <Calendar className="h-3 w-3" />
-                    {age} years
-                  </span>
+                  <div className="px-3 py-1 bg-purple-500/10 border border-purple-500/20 rounded-lg text-sm text-purple-300 font-medium">
+                    <Calendar className="inline h-3 w-3 mr-1" />
+                    {age}
+                  </div>
                 )}
-
                 {gender && (
-                  <span className="inline-flex items-center gap-1 text-sm font-medium bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full text-gray-700 dark:text-gray-300 transition-colors duration-200">
-                    <Users className="h-3 w-3" />
+                  <div className="px-3 py-1 bg-indigo-500/10 border border-indigo-500/20 rounded-lg text-sm text-indigo-300 font-medium">
+                    <Users className="inline h-3 w-3 mr-1" />
                     {gender}
-                  </span>
+                  </div>
                 )}
               </div>
 
-              <div className="border-t border-gray-200 dark:border-gray-700 pt-4 transition-colors duration-200">
-                <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1 transition-colors duration-200">
-                  <Info className="h-4 w-4" />
+              {/* About Section */}
+              <div className="border-t border-white/5 pt-4">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-gray-600 mb-2 flex items-center gap-2">
+                  <Info className="h-3 w-3" />
                   About
                 </h3>
-                <p className="text-gray-700 dark:text-gray-300 text-sm transition-colors duration-200">
-                  {about || "No bio available"}
+                <p className="text-sm text-gray-400 leading-relaxed">
+                  {about ||
+                    "No bio available. Add a bio to help others get to know you!"}
                 </p>
               </div>
+
+              {/* Skills Preview */}
+              {skills.length > 0 && (
+                <div className="border-t border-white/5 pt-4 mt-4">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-gray-600 mb-3 flex items-center gap-2">
+                    <Check className="h-3 w-3" />
+                    Skills
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {skills.slice(0, 6).map((skill) => (
+                      <div
+                        key={skill}
+                        className="tech-badge border-purple-400/20 text-purple-400"
+                      >
+                        <span>
+                          {techSkillsOptions.find((opt) => opt.value === skill)
+                            ?.label || skill}
+                        </span>
+                      </div>
+                    ))}
+                    {skills.length > 6 && (
+                      <div className="tech-badge border-white/5 text-gray-500 border-dashed">
+                        <span>+{skills.length - 6}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
         {/* Edit Form */}
-        <div className="lg:col-span-2">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden transition-colors duration-200">
-            <div className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div className="space-y-2">
-                  <label
-                    htmlFor="firstName"
-                    className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-1 transition-colors duration-200"
-                  >
-                    <User className="h-4 w-4" />
-                    First Name
-                  </label>
-                  <input
-                    id="firstName"
-                    type="text"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-200"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                  />
-                </div>
+        <div className="lg:col-span-2 space-y-6">
+          {/* Basic Info Section */}
+          <div className="profile-card">
+            <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+              <User className="h-5 w-5 text-purple-400" />
+              Basic Information
+            </h3>
 
-                <div className="space-y-2">
-                  <label
-                    htmlFor="lastName"
-                    className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-1 transition-colors duration-200"
-                  >
-                    <User className="h-4 w-4" />
-                    Last Name
-                  </label>
-                  <input
-                    id="lastName"
-                    type="text"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-200"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2 mb-6">
-                <label
-                  htmlFor="photoURL"
-                  className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-1 transition-colors duration-200"
-                >
-                  <Camera className="h-4 w-4" />
-                  Profile Photo URL
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="text-xs font-bold uppercase tracking-wider text-gray-400">
+                  First Name
                 </label>
                 <input
-                  id="photoURL"
-                  type="file"
-                  ref={fileInputRef}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-200 file:border file:border-gray-400 file:rounded file:px-2 file:py-1"
-                  onChange={(e)=> {setSelectedPhoto(e.target.files[0])
-                  }}
-                  accept="image/*"
+                  type="text"
+                  className="login-input"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  placeholder="John"
                 />
-
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div className="space-y-2">
-                  <label
-                    htmlFor="age"
-                    className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-1 transition-colors duration-200"
-                  >
-                    <Calendar className="h-4 w-4" />
-                    Age
-                  </label>
-                  <input
-                    id="age"
-                    type="number"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-200"
-                    value={age}
-                    onChange={(e) => setAge(e.target.value)}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label
-                    htmlFor="gender"
-                    className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-1 transition-colors duration-200"
-                  >
-                    <Users className="h-4 w-4" />
-                    Gender
-                  </label>
-                  <div className="relative">
-                    <select
-                      id="gender"
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 appearance-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-200"
-                      value={gender}
-                      onChange={(e) => setGender(e.target.value)}
-                    >
-                      <option value="" disabled>
-                        Select Gender
-                      </option>
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
-                      <option value="Other">Other</option>
-                    </select>
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                      <svg
-                        className="h-5 w-5 text-gray-400 dark:text-gray-500 transition-colors duration-200"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-       {/* Skills Section */}
-      <div className="space-y-2 mb-6">
-        <label
-          htmlFor="skills"
-          className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-1 transition-colors duration-200"
-        >
-          Skills
-        </label>
-        {/* Selected skills with cross to remove */}
-        <div className="flex flex-wrap gap-2 mb-2">
-          {skills.map(skill => (
-            <div
-              key={skill}
-              className="badge badge-primary gap-1 flex items-center"
-            >
-              {techSkillsOptions.find(opt => opt.value === skill)?.label || skill}
-              <button
-                type="button"
-                className="ml-1 text-xs text-white hover:text-red-200"
-                onClick={() => setSkills(skills.filter(s => s !== skill))}
-                aria-label="Remove skill"
-              >
-                ✕
-              </button>
-            </div>
-          ))}
-        </div>
-        {/* DaisyUI dropdown with search */}
-        <div className="dropdown w-full">
-          <input
-            type="text"
-            className="input input-bordered w-full mb-1  border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-200"
-            placeholder="Search skills..."
-            value={skillSearch}
-            onChange={e => setSkillSearch(e.target.value)}
-          />
-          <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 dark:bg-gray-800 rounded-box w-full max-h-48 overflow-auto">
-            {filteredSkills.length === 0 && (
-              <li className="text-gray-400 px-2 py-1">No skills found</li>
-            )}
-            {filteredSkills.map(opt => (
-              <li key={opt.value}>
-                <button
-                  type="button"
-                  className="w-full text-left px-2 py-1 hover:bg-purple-100 dark:hover:bg-gray-700"
-                  onClick={() => {
-                    setSkills([...skills, opt.value]);
-                    setSkillSearch("");
-                  }}
-                >
-                  {opt.label}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-              <div className="space-y-2 mb-6">
-                <label
-                  htmlFor="about"
-                  className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-1 transition-colors duration-200"
-                >
-                  <Info className="h-4 w-4" />
-                  About
+              <div className="space-y-2">
+                <label className="text-xs font-bold uppercase tracking-wider text-gray-400">
+                  Last Name
                 </label>
-                <textarea
-                  id="about"
-                  rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-200"
-                  value={about}
-                  onChange={(e) => setAbout(e.target.value)}
-                  placeholder="Tell other developers about yourself, your skills, and interests..."
-                ></textarea>
+                <input
+                  type="text"
+                  className="login-input"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  placeholder="Doe"
+                />
               </div>
 
-              {error && (
-                <div className="bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 px-4 py-3 rounded-md text-sm mb-6 transition-colors duration-200">
-                  {error}
-                </div>
-              )}
+              <div className="space-y-2">
+                <label className="text-xs font-bold uppercase tracking-wider text-gray-400 flex items-center gap-2">
+                  <Calendar className="h-3.5 w-3.5" />
+                  Age
+                </label>
+                <input
+                  type="number"
+                  className="login-input"
+                  value={age}
+                  onChange={(e) => setAge(e.target.value)}
+                  placeholder="25"
+                />
+              </div>
 
-              <button
-                className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium rounded-md shadow hover:from-purple-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-all duration-200"
-                onClick={saveProfile}
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <Loader2 className="h-5 w-5 animate-spin" />
-                ) : (
-                  <>
-                    <Save className="h-5 w-5" />
-                    Save Profile
-                  </>
-                )}
-              </button>
+              <div className="space-y-2">
+                <label className="text-xs font-bold uppercase tracking-wider text-gray-400 flex items-center gap-2">
+                  <Users className="h-3.5 w-3.5" />
+                  Gender
+                </label>
+                <select
+                  className="login-input"
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
+                >
+                  <option value="" disabled>
+                    Select Gender
+                  </option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
             </div>
           </div>
+
+          {/* Photo Section */}
+          <div className="profile-card">
+            <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+              <Camera className="h-5 w-5 text-purple-400" />
+              Profile Photo
+            </h3>
+
+            <div className="space-y-2">
+              <input
+                type="file"
+                ref={fileInputRef}
+                className="w-full px-4 py-3 bg-gray-800/40 border border-white/5 rounded-xl text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-purple-600 file:text-white file:font-semibold hover:file:bg-purple-700 transition-all focus:outline-none focus:ring-2 focus:ring-purple-500"
+                onChange={(e) => setSelectedPhoto(e.target.files[0])}
+                accept="image/*"
+              />
+              <p className="text-xs text-gray-500">
+                Recommended: Square image, at least 400x400px
+              </p>
+            </div>
+          </div>
+
+          {/* Skills Section */}
+          <div className="profile-card">
+            <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+              <Check className="h-5 w-5 text-purple-400" />
+              Technical Skills
+            </h3>
+
+            {/* Selected Skills */}
+            <div className="flex flex-wrap gap-2 mb-4">
+              {skills.map((skill) => (
+                <div
+                  key={skill}
+                  className="px-3 py-2 bg-purple-500/10 border border-purple-500/20 rounded-lg text-sm text-purple-300 font-medium flex items-center gap-2 hover:bg-purple-500/20 transition-colors group"
+                >
+                  {techSkillsOptions.find((opt) => opt.value === skill)
+                    ?.label || skill}
+                  <button
+                    type="button"
+                    className="text-purple-400 hover:text-red-400 transition-colors"
+                    onClick={() => setSkills(skills.filter((s) => s !== skill))}
+                    aria-label="Remove skill"
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {/* Search Input */}
+            <div className="dropdown w-full">
+              <input
+                type="text"
+                className="login-input"
+                placeholder="Search and add skills..."
+                value={skillSearch}
+                onChange={(e) => setSkillSearch(e.target.value)}
+              />
+              {skillSearch && (
+                <ul className="mt-2 p-2 bg-gray-900/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl max-h-48 overflow-auto">
+                  {filteredSkills.length === 0 && (
+                    <li className="text-gray-500 px-4 py-2 text-sm">
+                      No skills found
+                    </li>
+                  )}
+                  {filteredSkills.map((opt) => (
+                    <li key={opt.value}>
+                      <button
+                        type="button"
+                        className="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-white/5 rounded-lg transition-colors"
+                        onClick={() => {
+                          setSkills([...skills, opt.value]);
+                          setSkillSearch("");
+                        }}
+                      >
+                        {opt.label}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+
+          {/* About Section */}
+          <div className="profile-card">
+            <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+              <Info className="h-5 w-5 text-purple-400" />
+              About You
+            </h3>
+
+            <div className="space-y-2">
+              <textarea
+                rows={6}
+                className="login-input resize-none"
+                value={about}
+                onChange={(e) => setAbout(e.target.value)}
+                placeholder="Tell other developers about yourself, your experience, and what you're passionate about..."
+              />
+              <p className="text-xs text-gray-500">
+                {about.length}/500 characters
+              </p>
+            </div>
+          </div>
+
+          {/* Error Message */}
+          {error && (
+            <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-6 py-4 rounded-xl text-sm backdrop-blur-sm">
+              {error}
+            </div>
+          )}
+
+          {/* Save Button */}
+          <button
+            className="btn-primary w-full justify-center gap-2 text-base py-4"
+            onClick={saveProfile}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <Loader2 className="h-5 w-5 animate-spin" />
+            ) : (
+              <>
+                <Save className="h-5 w-5" />
+                Save Profile
+              </>
+            )}
+          </button>
         </div>
       </div>
 
+      {/* Success Toast */}
       {showToast && (
-        <div className="fixed bottom-4 right-4 z-50">
-          <div className="bg-green-600 text-white px-4 py-3 rounded-lg shadow-lg flex items-center gap-2">
-            <Check className="h-5 w-5" />
-            <span>Profile saved successfully!</span>
+        <div className="fixed bottom-6 right-6 z-50 animate-fadeIn">
+          <div className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 border border-green-500/20">
+            <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+              <Check className="h-5 w-5" />
+            </div>
+            <span className="font-semibold">Profile saved successfully!</span>
           </div>
         </div>
       )}

@@ -20,7 +20,6 @@ import {
 import Peer from "simple-peer";
 import SocketContext from "../utils/SocketContext";
 
-
 const Chat = () => {
   const { targetUserId } = useParams();
   const user = useSelector((store) => store.user);
@@ -37,10 +36,10 @@ const Chat = () => {
   const socket = useContext(SocketContext);
 
   // ✅ Use a ref for the stream to avoid stale closures
-  const streamRef = useRef(null); 
+  const streamRef = useRef(null);
 
   // You can keep a state just to know IF a stream exists, to trigger UI updates
-  const [hasStream, setHasStream] = useState(false); 
+  const [hasStream, setHasStream] = useState(false);
 
   const myVideo = useRef(null);
   // const [me, setMe] = useState("");
@@ -62,11 +61,10 @@ const Chat = () => {
   const [callAccepted, setCallAccepted] = useState(false);
   const [callerDetails, setCallerDetails] = useState(null);
 
-
   const [isMuted, setIsMuted] = useState(false);
   const [isVideoOff, setIsVideoOff] = useState(false);
 
-    // ✅ This effect will correctly attach the stream AFTER the component re-renders
+  // ✅ This effect will correctly attach the stream AFTER the component re-renders
   useEffect(() => {
     if (hasStream && myVideo.current && streamRef.current) {
       myVideo.current.srcObject = streamRef.current;
@@ -117,7 +115,7 @@ const Chat = () => {
         // ✅ Always fetch the latest connections data when the chat opens
         const connectionsResponse = await axios.get(
           BASE_URL + "/user/connections",
-          { withCredentials: true }
+          { withCredentials: true },
         );
         if (connectionsResponse.data.data) {
           dispatch(addConnections(connectionsResponse.data.data));
@@ -233,7 +231,7 @@ const Chat = () => {
       streamRef.current.getAudioTracks().forEach((track) => {
         track.enabled = !track.enabled;
       });
-    setIsMuted(!isMuted);
+      setIsMuted(!isMuted);
     }
   };
 
@@ -327,48 +325,47 @@ const Chat = () => {
         // setCallRejectedPopUp(false);
       } else {
         alert(
-          "Unable to access camera and microphone. Please check your permissions."
+          "Unable to access camera and microphone. Please check your permissions.",
         );
       }
     } catch (error) {
       alert(
-        "Error accessing media devices. Please allow camera and microphone permissions."
+        "Error accessing media devices. Please allow camera and microphone permissions.",
       );
       console.log("error accessing media devices", error);
     }
   };
 
   // ✅ End call cleanup logic
-const endCallCleanup = () => {
-  // 1. Stop all media tracks (camera + mic)
-  if (streamRef.current) {
-    streamRef.current.getTracks().forEach((track) => track.stop());
-  }
+  const endCallCleanup = () => {
+    // 1. Stop all media tracks (camera + mic)
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((track) => track.stop());
+    }
 
-  // 2. Destroy peer connection
-  if (connectionRef.current) {
-    connectionRef.current.destroy();
-  }
+    // 2. Destroy peer connection
+    if (connectionRef.current) {
+      connectionRef.current.destroy();
+    }
 
     // Reset state
-  setHasStream(false);
-  streamRef.current = null;
-  setCallAccepted(false);
-  setCallerDetails(null);
-  connectionRef.current = null;
-
-};
+    setHasStream(false);
+    streamRef.current = null;
+    setCallAccepted(false);
+    setCallerDetails(null);
+    connectionRef.current = null;
+  };
 
   // ✅ New function for the user clicking the hang-up button
   const hangUpCall = () => {
     // First, notify the other user that the call is ending
-    if (callerDetails) { // callerDetails holds the callee's socket ID
+    if (callerDetails) {
+      // callerDetails holds the callee's socket ID
       socket.emit("endCall", { to: callerDetails });
     }
     // Then, perform the local cleanup
     endCallCleanup();
   };
-
 
   if (isLoading || !targetUser) {
     return (
@@ -401,106 +398,136 @@ const endCallCleanup = () => {
   };
 
   return (
-    <div className="w-9/10 sm:w-1/2 h-[70vh] mx-auto m-7 border rounded-sm border-gray-600 flex flex-col ">
+    <div className="chat-container">
       {/* Header */}
-      <div className="bg-gray-800 flex  items-center justify-between text-white rounded-t-sm border-b border-gray-600 px-4 py-3 gap-3 sm:gap-2 w-full">
+      <div className="chat-header">
         {/* Avatar */}
-        <div className="h-10 w-10 sm:h-12 sm:w-12 lg:h-14 lg:w-14 rounded-full overflow-hidden flex-shrink-0 bg-gray-700 flex items-center justify-center">
-          {targetUser?.photoURL ? (
-            <img
-              src={targetUser?.photoURL}
-              alt={`${targetUser?.firstName} ${targetUser?.lastName}`}
-              className="h-full w-full object-cover"
-              referrerPolicy="no-referrer"
-            />
-          ) : (
-            <span className="text-sm sm:text-lg md:text-xl font-bold">
-              {targetUser?.firstName?.charAt(0)}
-              {targetUser?.lastName?.charAt(0)}
-            </span>
-          )}
+        <div className="relative">
+          <div className="h-12 w-12 rounded-full overflow-hidden border-2 border-white/10 shadow-lg bg-gray-700">
+            {targetUser?.photoURL ? (
+              <img
+                src={targetUser?.photoURL}
+                alt={`${targetUser?.firstName} ${targetUser?.lastName}`}
+                className="h-full w-full object-cover"
+                referrerPolicy="no-referrer"
+              />
+            ) : (
+              <div className="h-full w-full flex items-center justify-center text-white font-bold text-lg">
+                {targetUser?.firstName?.charAt(0)}
+                {targetUser?.lastName?.charAt(0)}
+              </div>
+            )}
+          </div>
+          {/* Online Status Indicator */}
+          <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full border-2 border-gray-900 shadow-lg">
+            <div
+              className={`w-full h-full rounded-full ${
+                onlineUsers.includes(targetUserId)
+                  ? "bg-green-400"
+                  : "bg-gray-500"
+              }`}
+            ></div>
+          </div>
         </div>
 
         {/* Name + Status */}
-        <div className="flex flex-col sm:flex-row sm:items-center w-full text-center sm:text-left">
-          <h3 className="text-sm sm:text-xl lg:text-2xl font-bold truncate">
-            {targetUser?.firstName + " " + targetUser?.lastName}
+        <div className="flex-1 min-w-0">
+          <h3 className="text-lg font-bold text-white truncate">
+            {targetUser?.firstName} {targetUser?.lastName}
           </h3>
-          <div
-            className="flex items-center justify-center sm:justify-start sm:ml-2 mt-1 sm:mt-0"
-            title={onlineUsers.includes(targetUserId) ? "Online" : "Offline"}
-          >
-            <span
-              className={
-                "inline-block w-2 h-2 sm:w-3 sm:h-3 md:w-3.5 md:h-3.5 rounded-full " +
-                (onlineUsers.includes(targetUserId)
-                  ? "bg-green-400"
-                  : "bg-gray-400")
-              }
-            ></span>
-            <span className="ml-1 text-xs sm:text-sm text-gray-400">
-              {onlineUsers.includes(targetUserId) ? "Online" : "Offline"}
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-400">
+              {onlineUsers.includes(targetUserId) ? "Active now" : "Offline"}
             </span>
             {isTyping && (
-              <span className="ml-2">
+              <>
+                <span className="text-gray-600">•</span>
                 <TypingIndicator />
-              </span>
+              </>
             )}
           </div>
         </div>
-        {/* WebRTC Calls Buttons */}
-        <div className="flex items-center space-x-2 mt-2 sm:mt-0 ml-auto flex-shrink-0">
-          <button
-            className="p-2 lg:p-4 cursor-pointer rounded-full bg-gray-700 hover:bg-gray-600"
-            onClick={startCall}
-          >
-            <FaVideo className="text-white" />
-          </button>
-          {/* <button className="p-2 lg:p-4 cursor-pointer rounded-full bg-gray-700 hover:bg-gray-600">
-            <FaVideo className="text-white" />
-          </button> */}
-        </div>
+
+        {/* Video Call Button */}
+        <button
+          className="p-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all group"
+          onClick={startCall}
+          title="Start video call"
+        >
+          <FaVideo
+            className="text-purple-400 group-hover:text-purple-300 transition-colors"
+            size={18}
+          />
+        </button>
       </div>
 
-      <div className="flex-1 overflow-y-scroll">
-        {/* display messages */}
+      {/* Messages Area */}
+      <div className="chat-messages">
         {messages.map((msg, index) => {
           const isLatest = index === messages.length - 1;
+          const isMine = user?.firstName === msg?.firstName;
+
           return (
-            <div key={index} ref={isLatest ? lastMessageRef : null}>
+            <div
+              key={index}
+              ref={isLatest ? lastMessageRef : null}
+              className={`flex ${isMine ? "justify-end" : "justify-start"} mb-4`}
+            >
               <div
-                className={
-                  "chat " +
-                  (user?.firstName == msg?.firstName
-                    ? "chat-end"
-                    : "chat-start")
-                }
+                className={`flex gap-3 max-w-[70%] ${isMine ? "flex-row-reverse" : ""}`}
               >
-                <div className="chat-header">
-                  {`${msg?.firstName} ${msg?.lastName}`}
-                  <time className="text-xs opacity-50">{msg?.timeAgo}</time>
+                {/* Avatar (only for others' messages) */}
+                {!isMine && (
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                    {msg?.firstName?.charAt(0)}
+                    {msg?.lastName?.charAt(0)}
+                  </div>
+                )}
+
+                {/* Message Bubble */}
+                <div className="flex flex-col">
+                  <div
+                    className={`message-bubble ${isMine ? "message-bubble-sent" : "message-bubble-received"}`}
+                  >
+                    {msg?.text}
+                  </div>
+                  <div
+                    className={`flex items-center gap-2 mt-1 text-xs text-gray-600 ${isMine ? "justify-end" : ""}`}
+                  >
+                    <span>{msg?.timeAgo}</span>
+                    {isMine && <span>• Seen</span>}
+                  </div>
                 </div>
-                <div className="chat-bubble">{msg?.text}</div>
-                <div className="chat-footer opacity-50">Seen</div>
               </div>
             </div>
           );
         })}
       </div>
-      <div className="w-full p-5 border-t justify-center items-center gap-3 border-gray-600 flex ">
+
+      {/* Input Area */}
+      <div className="chat-input-container">
         <input
-          className="input w-full border border-gray-600"
+          className="chat-input"
           value={newMessage}
           onChange={(e) => {
             setNewMessage(e.target.value);
             socket.emit("typing", { userId, isTyping: true });
-            // emit false if input is cleared
             if (e.target.value === "") {
               socket.emit("typing", { userId, isTyping: false });
             }
           }}
+          onKeyPress={(e) => {
+            if (e.key === "Enter" && newMessage.trim()) {
+              sendMessage();
+            }
+          }}
+          placeholder="Type a message..."
         />
-        <button onClick={sendMessage} className="btn bg-primary p-5">
+        <button
+          onClick={sendMessage}
+          className="btn-primary px-6"
+          disabled={!newMessage.trim()}
+        >
           Send
         </button>
       </div>
